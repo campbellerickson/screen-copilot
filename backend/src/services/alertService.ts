@@ -7,6 +7,7 @@ export class AlertService {
 
   /**
    * Check budget status and trigger alerts if needed
+   * OPTIMIZED: Batch query for existing alerts to avoid N+1 problem
    */
   async checkAndTriggerAlerts(
     userId: string,
@@ -19,8 +20,9 @@ export class AlertService {
     const budget = await this.budgetService.getCurrentBudget(userId);
     if (!budget) return alerts;
 
-    for (const categoryBudget of budget.categories) {
-      if (categoryBudget.isExcluded) continue;
+    // Filter categories that are over budget
+    const overBudgetCategories = budget.categories.filter((categoryBudget) => {
+      if (categoryBudget.isExcluded) return false;
 
       const usedToday = categoryUsage[categoryBudget.categoryType] || 0;
       const dailyBudget = this.budgetService.calculateDailyBudget(
@@ -28,37 +30,65 @@ export class AlertService {
         budget.monthYear
       );
 
-      // Check if over budget
-      if (usedToday > dailyBudget) {
-        const overageMinutes = usedToday - dailyBudget;
+      return usedToday > dailyBudget;
+    });
 
-        // Check if we've already sent an alert today
-        const existingAlert = await prisma.budgetAlert.findFirst({
-          where: {
-            userId,
-            categoryType: categoryBudget.categoryType,
-            alertDate: date,
-          },
-        });
+    if (overBudgetCategories.length === 0) return alerts;
 
-        if (!existingAlert) {
-          // Create alert record
-          await prisma.budgetAlert.create({
-            data: {
-              userId,
-              categoryType: categoryBudget.categoryType,
-              alertDate: date,
-              overageMinutes,
-            },
-          });
+    // Batch query for existing alerts (OPTIMIZATION: single query instead of N queries)
+    const existingAlerts = await prisma.budgetAlert.findMany({
+      where: {
+        userId,
+        alertDate: date,
+        categoryType: {
+          in: overBudgetCategories.map((cat) => cat.categoryType),
+        },
+      },
+      select: {
+        categoryType: true,
+      },
+    });
 
-          // Add to alerts to return
-          alerts.push({
-            category: categoryBudget.categoryName,
-            overageMinutes,
-          });
-        }
-      }
+    const existingCategoryTypes = new Set(existingAlerts.map((alert) => alert.categoryType));
+
+    // Prepare bulk insert data
+    const alertsToCreate: Array<{
+      userId: string;
+      categoryType: string;
+      alertDate: Date;
+      overageMinutes: number;
+    }> = [];
+
+    for (const categoryBudget of overBudgetCategories) {
+      // Skip if alert already exists for this category
+      if (existingCategoryTypes.has(categoryBudget.categoryType)) continue;
+
+      const usedToday = categoryUsage[categoryBudget.categoryType] || 0;
+      const dailyBudget = this.budgetService.calculateDailyBudget(
+        Number(categoryBudget.monthlyHours),
+        budget.monthYear
+      );
+      const overageMinutes = usedToday - dailyBudget;
+
+      alertsToCreate.push({
+        userId,
+        categoryType: categoryBudget.categoryType,
+        alertDate: date,
+        overageMinutes,
+      });
+
+      alerts.push({
+        category: categoryBudget.categoryName,
+        overageMinutes,
+      });
+    }
+
+    // Bulk create alerts (OPTIMIZATION: single insert instead of multiple)
+    if (alertsToCreate.length > 0) {
+      await prisma.budgetAlert.createMany({
+        data: alertsToCreate,
+        skipDuplicates: true,
+      });
     }
 
     return alerts;

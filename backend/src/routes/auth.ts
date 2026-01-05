@@ -28,4 +28,11 @@ router.post('/apple', authController.handleAppleSignIn);
  */
 router.get('/me', authenticate, authController.getCurrentUser);
 
+/**
+ * DELETE /api/v1/auth/account
+ * Delete user account (requires authentication)
+ * This will cancel subscription and delete all user data
+ */
+router.delete('/account', authenticate, authController.deleteAccount);
+
 export default router;

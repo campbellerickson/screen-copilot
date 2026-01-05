@@ -1,0 +1,19 @@
+{
+  "name": "screen-budget",
+  "version": "1.0.0",
+  "description": "Screen time budget management app",
+  "scripts": {
+    "vercel-build": "cd backend && npm install && npx prisma generate && npm run build",
+    "start": "cd backend && npm start",
+    "postinstall": "cd backend && npm install && npx prisma generate"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/campbellerickson/screen-copilot.git"
+  },
+  "author": "Campbell Erickson",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

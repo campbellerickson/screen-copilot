@@ -1,3 +1,10 @@
+//
+//  APIService.swift
+//  ScreenTimeBudget
+//
+//  API service for backend communication
+//
+
 import Foundation
 
 class APIService {
@@ -43,6 +50,7 @@ class APIService {
             do {
                 var mutableRequest = request
                 mutableRequest.timeoutInterval = requestTimeout
+                addAuthHeader(to: &mutableRequest)
 
                 let (data, response) = try await URLSession.shared.data(for: mutableRequest)
 
@@ -88,9 +96,84 @@ class APIService {
         throw APIError.networkError(lastError ?? URLError(.unknown))
     }
 
+    // MARK: - Subscription APIs
+
+    func getSubscriptionStatus() async throws -> SubscriptionStatusResponse {
+        guard let url = URL(string: "\(baseURL)/subscription/status") else {
+            throw APIError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        addAuthHeader(to: &request)
+
+        struct Response: Codable {
+            let success: Bool
+            let data: SubscriptionStatusData
+        }
+
+        struct SubscriptionStatusData: Codable {
+            let status: String
+            let hasAccess: Bool
+            let platform: String?
+            let trialEndDate: String?
+            let renewalDate: String?
+            let priceUSD: Double?
+            let message: String
+        }
+
+        let response: Response = try await performRequest(request)
+        
+        return SubscriptionStatusResponse(
+            status: response.data.status,
+            hasAccess: response.data.hasAccess,
+            platform: response.data.platform,
+            trialEndDate: response.data.trialEndDate,
+            renewalDate: response.data.renewalDate,
+            priceUSD: response.data.priceUSD,
+            message: response.data.message
+        )
+    }
+
+    func cancelSubscription() async throws {
+        guard let url = URL(string: "\(baseURL)/subscription/cancel") else {
+            throw APIError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        addAuthHeader(to: &request)
+
+        struct Response: Codable {
+            let success: Bool
+            let message: String?
+        }
+
+        let _: Response = try await performRequest(request)
+    }
+
+    // MARK: - Account APIs
+
+    func deleteAccount() async throws {
+        guard let url = URL(string: "\(baseURL)/auth/account") else {
+            throw APIError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        addAuthHeader(to: &request)
+
+        struct Response: Codable {
+            let success: Bool
+            let message: String?
+        }
+
+        let _: Response = try await performRequest(request)
+    }
+
     // MARK: - Budget APIs
 
-    func createBudget(userId: String, monthYear: Date, categories: [CategoryBudgetInput]) async throws -> ScreenTimeBudget {
+    func createBudget(userId: String, monthYear: Date, categories: [CategoryBudgetInput]) async throws -> ScreenTimeBudget? {
         guard let url = URL(string: "\(baseURL)/screen-time/budgets") else {
             throw APIError.invalidURL
         }
@@ -101,12 +184,12 @@ class APIService {
         let body: [String: Any] = [
             "userId": userId,
             "monthYear": dateFormatter.string(from: monthYear),
-            "categories": categories.map { category in
+            "categories": categories.map { cat in
                 [
-                    "categoryType": category.categoryType.rawValue,
-                    "categoryName": category.categoryName,
-                    "monthlyHours": category.monthlyHours,
-                    "isExcluded": category.isExcluded
+                    "categoryType": cat.categoryType.rawValue,
+                    "categoryName": cat.categoryName,
+                    "monthlyHours": cat.monthlyHours,
+                    "isExcluded": cat.isExcluded
                 ]
             }
         ]
@@ -116,25 +199,6 @@ class APIService {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         addAuthHeader(to: &request)
         request.httpBody = try JSONSerialization.data(withJSONObject: body)
-
-        struct Response: Codable {
-            let success: Bool
-            let data: ScreenTimeBudget
-        }
-
-        let response: Response = try await performRequest(request)
-        Analytics.track("budget_created", properties: ["userId": userId])
-        return response.data
-    }
-
-    func getCurrentBudget(userId: String) async throws -> ScreenTimeBudget? {
-        guard let url = URL(string: "\(baseURL)/screen-time/budgets/\(userId)/current") else {
-            throw APIError.invalidURL
-        }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        addAuthHeader(to: &request)
 
         struct Response: Codable {
             let success: Bool
@@ -250,6 +314,18 @@ class APIService {
         let response: Response = try await performRequest(request)
         return response.data
     }
+}
+
+// MARK: - Response Models
+
+struct SubscriptionStatusResponse {
+    let status: String
+    let hasAccess: Bool
+    let platform: String?
+    let trialEndDate: String?
+    let renewalDate: String?
+    let priceUSD: Double?
+    let message: String
 }
 
 struct BudgetAlert: Codable {

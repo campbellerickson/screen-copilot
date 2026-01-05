@@ -6,6 +6,9 @@ import dotenv from 'dotenv';
 import screenTimeRoutes from './routes/screenTime';
 import authRoutes from './routes/auth';
 import subscriptionRoutes from './routes/subscription';
+import weeklyGoalsRoutes from './routes/weeklyGoals';
+import breakRemindersRoutes from './routes/breakReminders';
+import weeklyInsightsRoutes from './routes/weeklyInsights';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 
 dotenv.config();
@@ -39,6 +42,9 @@ if (process.env.NODE_ENV === 'development') {
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/subscription', subscriptionRoutes);
 app.use('/api/v1/screen-time', screenTimeRoutes);
+app.use('/api/v1/weekly-goals', weeklyGoalsRoutes);
+app.use('/api/v1/break-reminders', breakRemindersRoutes);
+app.use('/api/v1/weekly-insights', weeklyInsightsRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
@@ -55,8 +61,10 @@ app.use(notFoundHandler);
 // Global error handler (must be last)
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`
+// Only start server if not running in Vercel serverless environment
+if (process.env.VERCEL !== '1') {
+  app.listen(PORT, () => {
+    console.log(`
 ╔═══════════════════════════════════════════════╗
 ║  Screen Budget API Server                     ║
 ║  Port: ${PORT}                                    ║
@@ -64,6 +72,7 @@ app.listen(PORT, () => {
 ║  Time: ${new Date().toISOString()}  ║
 ╚═══════════════════════════════════════════════╝
   `);
-});
+  });
+}
 
 export default app;

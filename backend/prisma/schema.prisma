@@ -1,3 +1,6 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -24,6 +27,10 @@ model User {
   dailyUsages       DailyAppUsage[]
   budgetAlerts      BudgetAlert[]
   subscription      Subscription?
+  streaks           Streak?
+  achievements      Achievement[]
+  weeklyGoals       WeeklyGoal[]
+  breakReminders    BreakReminder?
 
   @@map("users")
 }
@@ -44,99 +51,92 @@ model Subscription {
   subscriptionEndDate   DateTime?
   renewalDate           DateTime?
 
-  // Payment provider info
-  stripeCustomerId      String?   @unique // For web subscriptions
+  // Payment info
+  stripeCustomerId      String?   @unique
   stripeSubscriptionId  String?   @unique
-  appleTransactionId    String?   @unique // For iOS subscriptions
-  appleOriginalTransactionId String? @unique
+  priceUSD              Decimal?  @db.Decimal(10, 2)
 
-  // Pricing
-  priceUSD              Decimal   @default(0.99) @db.Decimal(5, 2)
-  currency              String    @default("USD") @db.VarChar(3)
+  // Receipt info (iOS)
+  iosReceiptData        String?   @db.Text
+  iosTransactionId      String?
 
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId])
-  @@index([status])
   @@map("subscriptions")
 }
 
-// Screen Time Budgets
+// Screen time budgets
 model ScreenTimeBudget {
-  id        String   @id @default(uuid())
-  userId    String
-  monthYear DateTime // First day of month: 2025-01-01
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String    @id @default(uuid())
+  userId     String
+  monthYear  DateTime  @db.Date
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 
-  user       User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user       User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   categories CategoryBudget[]
 
   @@unique([userId, monthYear])
-  @@index([userId, monthYear])
   @@map("screen_time_budgets")
 }
 
-// Category Budgets
+// Category budgets
 model CategoryBudget {
-  id           String   @id @default(uuid())
-  budgetId     String
-  categoryName String   @db.VarChar(100)
-  categoryType String   @db.VarChar(50) // 'social_media', 'entertainment', etc.
-  monthlyHours Decimal  @db.Decimal(6, 2)
-  isExcluded   Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id            String    @id @default(uuid())
+  budgetId      String
+  categoryType  String    @db.VarChar(50)
+  categoryName  String    @db.VarChar(100)
+  monthlyHours  Decimal   @db.Decimal(10, 2)
+  isExcluded    Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
   budget ScreenTimeBudget @relation(fields: [budgetId], references: [id], onDelete: Cascade)
 
-  @@index([budgetId])
   @@map("category_budgets")
 }
 
-// User Apps (detected installed apps)
+// User apps
 model UserApp {
-  id           String   @id @default(uuid())
-  userId       String
-  bundleId     String   @db.VarChar(255)
-  appName      String   @db.VarChar(255)
-  categoryType String?  @db.VarChar(50)
-  isExcluded   Boolean  @default(false)
-  lastDetected DateTime @default(now())
-  createdAt    DateTime @default(now())
+  id            String    @id @default(uuid())
+  userId        String
+  bundleId      String    @db.VarChar(255)
+  appName       String    @db.VarChar(255)
+  categoryType  String    @db.VarChar(50)
+  lastDetected  DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
-  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  dailyUsages DailyAppUsage[]
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dailyUsages   DailyAppUsage[]
 
   @@unique([userId, bundleId])
-  @@index([userId])
-  @@index([userId, categoryType])
   @@map("user_apps")
 }
 
-// Daily Usage Records
+// Daily app usage
 model DailyAppUsage {
-  id           String   @id @default(uuid())
-  userId       String
-  appId        String
-  usageDate    DateTime @db.Date
+  id         String    @id @default(uuid())
+  userId     String
+  appId      String
+  usageDate  DateTime  @db.Date
   totalMinutes Int
-  syncedAt     DateTime @default(now())
+  syncedAt   DateTime  @default(now())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 
   user User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   app  UserApp @relation(fields: [appId], references: [id], onDelete: Cascade)
 
   @@unique([userId, appId, usageDate])
   @@index([userId, usageDate])
-  @@index([appId, usageDate])
   @@map("daily_app_usage")
 }
 
-// Budget Alerts History
+// Budget alerts
 model BudgetAlert {
   id             String    @id @default(uuid())
   userId         String
@@ -151,4 +151,72 @@ model BudgetAlert {
 
   @@index([userId, alertDate])
   @@map("budget_alerts")
+}
+
+// Streaks
+model Streak {
+  id            String    @id @default(uuid())
+  userId        String    @unique
+  currentStreak Int       @default(0)
+  longestStreak Int       @default(0)
+  lastAchieved  DateTime? // Last day a streak was maintained
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("streaks")
+}
+
+// Achievements
+model Achievement {
+  id            String    @id @default(uuid())
+  userId        String
+  name          String    @db.VarChar(100)
+  description   String?
+  achievedAt    DateTime  @default(now())
+  type          String    @db.VarChar(50) // e.g., 'streak', 'budget_master', 'first_budget'
+  value         Int?      // e.g., streak length, budget amount
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@unique([userId, name]) // A user can only achieve a specific achievement once
+  @@map("achievements")
+}
+
+// Weekly Goals
+model WeeklyGoal {
+  id                String    @id @default(uuid())
+  userId            String
+  weekStartDate     DateTime  @db.Date // Monday of the week
+  targetMinutes     Int       // Weekly target in minutes
+  currentMinutes    Int       @default(0) // Current progress
+  daysCompleted     Int       @default(0) // Days meeting goal (out of 7)
+  isActive          Boolean   @default(true)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, weekStartDate])
+  @@index([userId, weekStartDate])
+  @@map("weekly_goals")
+}
+
+// Break Reminders
+model BreakReminder {
+  id                String    @id @default(uuid())
+  userId            String    @unique
+  isEnabled         Boolean   @default(true)
+  intervalMinutes   Int       @default(60) // Remind after X minutes of usage
+  breakDurationMinutes Int    @default(5) // Suggested break duration
+  quietHoursStart   Int?      // Hour (0-23) when reminders should pause
+  quietHoursEnd     Int?      // Hour (0-23) when reminders should resume
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("break_reminders")
 }

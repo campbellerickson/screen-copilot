@@ -1,8 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { PrismaClient } from '@prisma/client';
 import { verifyToken, extractTokenFromHeader } from '../utils/auth';
-
-const prisma = new PrismaClient();
+import prisma from '../config/database';
 
 /**
  * Authentication middleware

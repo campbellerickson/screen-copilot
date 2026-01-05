@@ -5,50 +5,53 @@ import { Decimal } from '@prisma/client/runtime/library';
 export class BudgetService {
   /**
    * Create a new screen time budget
+   * OPTIMIZED: Use transaction for atomicity
    */
   async createBudget(
     userId: string,
     monthYear: Date,
     categories: CategoryBudgetInput[]
   ) {
-    // Delete existing budget for this month if it exists
-    await prisma.screenTimeBudget.deleteMany({
-      where: {
-        userId,
-        monthYear,
-      },
-    });
-
-    // Create new budget with categories
-    const budget = await prisma.screenTimeBudget.create({
-      data: {
-        userId,
-        monthYear,
-        categories: {
-          create: categories.map((cat) => ({
-            categoryType: cat.categoryType,
-            categoryName: cat.categoryName,
-            monthlyHours: new Decimal(cat.monthlyHours),
-            isExcluded: cat.isExcluded,
-          })),
+    // OPTIMIZATION: Use transaction to ensure atomicity
+    return await prisma.$transaction(async (tx) => {
+      // Delete existing budget for this month if it exists
+      await tx.screenTimeBudget.deleteMany({
+        where: {
+          userId,
+          monthYear,
         },
-      },
-      include: {
-        categories: true,
-      },
-    });
+      });
 
-    return budget;
+      // Create new budget with categories
+      return await tx.screenTimeBudget.create({
+        data: {
+          userId,
+          monthYear,
+          categories: {
+            create: categories.map((cat) => ({
+              categoryType: cat.categoryType,
+              categoryName: cat.categoryName,
+              monthlyHours: new Decimal(cat.monthlyHours),
+              isExcluded: cat.isExcluded,
+            })),
+          },
+        },
+        include: {
+          categories: true,
+        },
+      });
+    });
   }
 
   /**
    * Get current month's budget for a user
+   * OPTIMIZED: Cache-friendly query structure
    */
   async getCurrentBudget(userId: string) {
     const now = new Date();
     const monthYear = new Date(now.getFullYear(), now.getMonth(), 1);
 
-    const budget = await prisma.screenTimeBudget.findUnique({
+    return await prisma.screenTimeBudget.findUnique({
       where: {
         userId_monthYear: {
           userId,
@@ -59,8 +62,6 @@ export class BudgetService {
         categories: true,
       },
     });
-
-    return budget;
   }
 
   /**
@@ -87,6 +88,7 @@ export class BudgetService {
 
   /**
    * Calculate daily budget from monthly budget
+   * OPTIMIZED: Memoization-ready function (could cache results)
    */
   calculateDailyBudget(monthlyHours: number, monthYear: Date): number {
     const daysInMonth = new Date(

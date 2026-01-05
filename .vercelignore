@@ -1,0 +1,45 @@
+# iOS app - not needed for backend deployment
+ios/
+
+# Documentation
+*.md
+!README.md
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+logs/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Build artifacts
+backend/dist/
+backend/node_modules/
+node_modules/
+
+# Environment (will be set in Vercel dashboard)
+.env
+.env.*
+!.env.example
+
+# Database
+*.sqlite
+*.sqlite3
+*.db
+
+# macOS
+.DS_Store
+
+# Temporary
+tmp/
+temp/
+*.tmp
