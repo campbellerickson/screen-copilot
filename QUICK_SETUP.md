@@ -9,24 +9,25 @@
 
 ## 🔗 Connection Strings
 
-### For Local Development (Direct Connection)
-```env
-DATABASE_URL="postgresql://postgres:wHSCHAPS2017!@db.jqfyunukinwglaitjkfr.supabase.co:5432/postgres"
-```
+### ⚠️ IMPORTANT: Use Connection Pooling (Required for Free Plan)
 
-### For Vercel/Production (Connection Pooling) ⚠️ REQUIRED
-You need to get the **pooled connection string** from Supabase:
+Since you're on the Free Plan, you **must use the connection pooler** (it supports IPv4). The direct connection won't work.
+
+### Get Pooled Connection String
 
 1. Go to your Supabase project dashboard
 2. **Settings** → **Database**
 3. Scroll to **"Connection Pooling"** section
-4. Copy the **"Connection string"** (Transaction mode)
-5. It should look like:
-   ```env
-   DATABASE_URL="postgresql://postgres.jqfyunukinwglaitjkfr:wHSCHAPS2017!@aws-0-us-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1"
-   ```
+4. Click on **"Connection string"** tab
+5. Copy the **"Transaction mode"** connection string
+6. Replace `[YOUR-PASSWORD]` with `wHSCHAPS2017!`
 
-**Important:** Replace `[YOUR-PASSWORD]` with `wHSCHAPS2017!` in the pooled connection string.
+The pooled connection string should look like:
+```env
+DATABASE_URL="postgresql://postgres.jqfyunukinwglaitjkfr:wHSCHAPS2017!@aws-0-us-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1"
+```
+
+**Use this same pooled connection string for BOTH local development AND Vercel production!**
 
 ---
 
