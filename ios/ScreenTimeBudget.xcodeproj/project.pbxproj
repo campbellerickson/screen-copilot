@@ -1,0 +1,746 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5FA333A92F08D9F500871DB0 /* DeviceActivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FA333A82F08D9F500871DB0 /* DeviceActivity.framework */; };
+		5FA333B12F08D9F500871DB0 /* ScreenTimeReportExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 5FA333A62F08D9F500871DB0 /* ScreenTimeReportExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5FA333652F088CB100871DB0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5FA3334C2F088CAF00871DB0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5FA333532F088CAF00871DB0;
+			remoteInfo = ScreenTimeBudget;
+		};
+		5FA3336F2F088CB100871DB0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5FA3334C2F088CAF00871DB0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5FA333532F088CAF00871DB0;
+			remoteInfo = ScreenTimeBudget;
+		};
+		5FA333AF2F08D9F500871DB0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5FA3334C2F088CAF00871DB0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5FA333A52F08D9F500871DB0;
+			remoteInfo = ScreenTimeReportExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5FA333B62F08D9F500871DB0 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				5FA333B12F08D9F500871DB0 /* ScreenTimeReportExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		5FA333542F088CAF00871DB0 /* ScreenTimeBudget.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScreenTimeBudget.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5FA333642F088CB100871DB0 /* ScreenTimeBudgetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScreenTimeBudgetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5FA3336E2F088CB100871DB0 /* ScreenTimeBudgetUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScreenTimeBudgetUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5FA333A62F08D9F500871DB0 /* ScreenTimeReportExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ScreenTimeReportExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		5FA333A82F08D9F500871DB0 /* DeviceActivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DeviceActivity.framework; path = System/Library/Frameworks/DeviceActivity.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		5FA333A12F08D6B000871DB0 /* Exceptions for "ScreenTimeBudget" folder in "ScreenTimeBudget" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 5FA333532F088CAF00871DB0 /* ScreenTimeBudget */;
+		};
+		5FA333B52F08D9F500871DB0 /* Exceptions for "ScreenTimeReportExtension" folder in "ScreenTimeReportExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 5FA333A52F08D9F500871DB0 /* ScreenTimeReportExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		5FA333562F088CAF00871DB0 /* ScreenTimeBudget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				5FA333A12F08D6B000871DB0 /* Exceptions for "ScreenTimeBudget" folder in "ScreenTimeBudget" target */,
+			);
+			path = ScreenTimeBudget;
+			sourceTree = "<group>";
+		};
+		5FA333672F088CB100871DB0 /* ScreenTimeBudgetTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ScreenTimeBudgetTests;
+			sourceTree = "<group>";
+		};
+		5FA333712F088CB100871DB0 /* ScreenTimeBudgetUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ScreenTimeBudgetUITests;
+			sourceTree = "<group>";
+		};
+		5FA333AA2F08D9F500871DB0 /* ScreenTimeReportExtension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				5FA333B52F08D9F500871DB0 /* Exceptions for "ScreenTimeReportExtension" folder in "ScreenTimeReportExtension" target */,
+			);
+			path = ScreenTimeReportExtension;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5FA333512F088CAF00871DB0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5FA333612F088CB100871DB0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5FA3336B2F088CB100871DB0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5FA333A32F08D9F500871DB0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5FA333A92F08D9F500871DB0 /* DeviceActivity.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5FA3334B2F088CAF00871DB0 = {
+			isa = PBXGroup;
+			children = (
+				5FA333562F088CAF00871DB0 /* ScreenTimeBudget */,
+				5FA333672F088CB100871DB0 /* ScreenTimeBudgetTests */,
+				5FA333712F088CB100871DB0 /* ScreenTimeBudgetUITests */,
+				5FA333AA2F08D9F500871DB0 /* ScreenTimeReportExtension */,
+				5FA333A72F08D9F500871DB0 /* Frameworks */,
+				5FA333552F088CAF00871DB0 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		5FA333552F088CAF00871DB0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5FA333542F088CAF00871DB0 /* ScreenTimeBudget.app */,
+				5FA333642F088CB100871DB0 /* ScreenTimeBudgetTests.xctest */,
+				5FA3336E2F088CB100871DB0 /* ScreenTimeBudgetUITests.xctest */,
+				5FA333A62F08D9F500871DB0 /* ScreenTimeReportExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5FA333A72F08D9F500871DB0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5FA333A82F08D9F500871DB0 /* DeviceActivity.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5FA333532F088CAF00871DB0 /* ScreenTimeBudget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5FA333782F088CB100871DB0 /* Build configuration list for PBXNativeTarget "ScreenTimeBudget" */;
+			buildPhases = (
+				5FA333502F088CAF00871DB0 /* Sources */,
+				5FA333512F088CAF00871DB0 /* Frameworks */,
+				5FA333522F088CAF00871DB0 /* Resources */,
+				5FA333B62F08D9F500871DB0 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5FA333B02F08D9F500871DB0 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				5FA333562F088CAF00871DB0 /* ScreenTimeBudget */,
+			);
+			name = ScreenTimeBudget;
+			packageProductDependencies = (
+			);
+			productName = ScreenTimeBudget;
+			productReference = 5FA333542F088CAF00871DB0 /* ScreenTimeBudget.app */;
+			productType = "com.apple.product-type.application";
+		};
+		5FA333632F088CB100871DB0 /* ScreenTimeBudgetTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5FA3337B2F088CB100871DB0 /* Build configuration list for PBXNativeTarget "ScreenTimeBudgetTests" */;
+			buildPhases = (
+				5FA333602F088CB100871DB0 /* Sources */,
+				5FA333612F088CB100871DB0 /* Frameworks */,
+				5FA333622F088CB100871DB0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5FA333662F088CB100871DB0 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				5FA333672F088CB100871DB0 /* ScreenTimeBudgetTests */,
+			);
+			name = ScreenTimeBudgetTests;
+			packageProductDependencies = (
+			);
+			productName = ScreenTimeBudgetTests;
+			productReference = 5FA333642F088CB100871DB0 /* ScreenTimeBudgetTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		5FA3336D2F088CB100871DB0 /* ScreenTimeBudgetUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5FA3337E2F088CB100871DB0 /* Build configuration list for PBXNativeTarget "ScreenTimeBudgetUITests" */;
+			buildPhases = (
+				5FA3336A2F088CB100871DB0 /* Sources */,
+				5FA3336B2F088CB100871DB0 /* Frameworks */,
+				5FA3336C2F088CB100871DB0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5FA333702F088CB100871DB0 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				5FA333712F088CB100871DB0 /* ScreenTimeBudgetUITests */,
+			);
+			name = ScreenTimeBudgetUITests;
+			packageProductDependencies = (
+			);
+			productName = ScreenTimeBudgetUITests;
+			productReference = 5FA3336E2F088CB100871DB0 /* ScreenTimeBudgetUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		5FA333A52F08D9F500871DB0 /* ScreenTimeReportExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5FA333B22F08D9F500871DB0 /* Build configuration list for PBXNativeTarget "ScreenTimeReportExtension" */;
+			buildPhases = (
+				5FA333A22F08D9F500871DB0 /* Sources */,
+				5FA333A32F08D9F500871DB0 /* Frameworks */,
+				5FA333A42F08D9F500871DB0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				5FA333AA2F08D9F500871DB0 /* ScreenTimeReportExtension */,
+			);
+			name = ScreenTimeReportExtension;
+			packageProductDependencies = (
+			);
+			productName = ScreenTimeReportExtension;
+			productReference = 5FA333A62F08D9F500871DB0 /* ScreenTimeReportExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5FA3334C2F088CAF00871DB0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					5FA333532F088CAF00871DB0 = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					5FA333632F088CB100871DB0 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 5FA333532F088CAF00871DB0;
+					};
+					5FA3336D2F088CB100871DB0 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 5FA333532F088CAF00871DB0;
+					};
+					5FA333A52F08D9F500871DB0 = {
+						CreatedOnToolsVersion = 16.2;
+					};
+				};
+			};
+			buildConfigurationList = 5FA3334F2F088CAF00871DB0 /* Build configuration list for PBXProject "ScreenTimeBudget" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 5FA3334B2F088CAF00871DB0;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 5FA333552F088CAF00871DB0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5FA333532F088CAF00871DB0 /* ScreenTimeBudget */,
+				5FA333632F088CB100871DB0 /* ScreenTimeBudgetTests */,
+				5FA3336D2F088CB100871DB0 /* ScreenTimeBudgetUITests */,
+				5FA333A52F08D9F500871DB0 /* ScreenTimeReportExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		5FA333522F088CAF00871DB0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5FA333622F088CB100871DB0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5FA3336C2F088CB100871DB0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5FA333A42F08D9F500871DB0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5FA333502F088CAF00871DB0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5FA333602F088CB100871DB0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5FA3336A2F088CB100871DB0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5FA333A22F08D9F500871DB0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5FA333662F088CB100871DB0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5FA333532F088CAF00871DB0 /* ScreenTimeBudget */;
+			targetProxy = 5FA333652F088CB100871DB0 /* PBXContainerItemProxy */;
+		};
+		5FA333702F088CB100871DB0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5FA333532F088CAF00871DB0 /* ScreenTimeBudget */;
+			targetProxy = 5FA3336F2F088CB100871DB0 /* PBXContainerItemProxy */;
+		};
+		5FA333B02F08D9F500871DB0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5FA333A52F08D9F500871DB0 /* ScreenTimeReportExtension */;
+			targetProxy = 5FA333AF2F08D9F500871DB0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		5FA333762F088CB100871DB0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		5FA333772F088CB100871DB0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		5FA333792F088CB100871DB0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ScreenTimeBudget/ScreenTimeBudgetDebug.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"ScreenTimeBudget/Preview Content\"";
+				DEVELOPMENT_TEAM = 2T3M8896B5;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ScreenTimeBudget/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.campbell.ScreenTimeBudget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5FA3337A2F088CB100871DB0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ScreenTimeBudget/ScreenTimeBudget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"ScreenTimeBudget/Preview Content\"";
+				DEVELOPMENT_TEAM = 2T3M8896B5;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ScreenTimeBudget/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.campbell.ScreenTimeBudget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		5FA3337C2F088CB100871DB0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.campbell.ScreenTimeBudgetTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ScreenTimeBudget.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ScreenTimeBudget";
+			};
+			name = Debug;
+		};
+		5FA3337D2F088CB100871DB0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.campbell.ScreenTimeBudgetTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ScreenTimeBudget.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ScreenTimeBudget";
+			};
+			name = Release;
+		};
+		5FA3337F2F088CB100871DB0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.campbell.ScreenTimeBudgetUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ScreenTimeBudget;
+			};
+			name = Debug;
+		};
+		5FA333802F088CB100871DB0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.campbell.ScreenTimeBudgetUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ScreenTimeBudget;
+			};
+			name = Release;
+		};
+		5FA333B32F08D9F500871DB0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ScreenTimeReportExtension/ScreenTimeReportExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2T3M8896B5;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ScreenTimeReportExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ScreenTimeReportExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.campbell.ScreenTimeBudget.ScreenTimeReportExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5FA333B42F08D9F500871DB0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ScreenTimeReportExtension/ScreenTimeReportExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2T3M8896B5;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ScreenTimeReportExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ScreenTimeReportExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.campbell.ScreenTimeBudget.ScreenTimeReportExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5FA3334F2F088CAF00871DB0 /* Build configuration list for PBXProject "ScreenTimeBudget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5FA333762F088CB100871DB0 /* Debug */,
+				5FA333772F088CB100871DB0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5FA333782F088CB100871DB0 /* Build configuration list for PBXNativeTarget "ScreenTimeBudget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5FA333792F088CB100871DB0 /* Debug */,
+				5FA3337A2F088CB100871DB0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5FA3337B2F088CB100871DB0 /* Build configuration list for PBXNativeTarget "ScreenTimeBudgetTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5FA3337C2F088CB100871DB0 /* Debug */,
+				5FA3337D2F088CB100871DB0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5FA3337E2F088CB100871DB0 /* Build configuration list for PBXNativeTarget "ScreenTimeBudgetUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5FA3337F2F088CB100871DB0 /* Debug */,
+				5FA333802F088CB100871DB0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5FA333B22F08D9F500871DB0 /* Build configuration list for PBXNativeTarget "ScreenTimeReportExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5FA333B32F08D9F500871DB0 /* Debug */,
+				5FA333B42F08D9F500871DB0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5FA3334C2F088CAF00871DB0 /* Project object */;
+}

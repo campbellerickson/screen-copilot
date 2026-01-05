@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import screenTimeRoutes from './routes/screenTime';
+import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 
 dotenv.config();
 
@@ -16,28 +17,44 @@ app.use(cors({
   origin: process.env.CORS_ORIGIN || '*',
 }));
 app.use(morgan('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Request logging in development
+if (process.env.NODE_ENV === 'development') {
+  app.use((req, res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+    next();
+  });
+}
 
 // Routes
 app.use('/api/v1/screen-time', screenTimeRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
-
-// Error handler
-app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error(err.stack);
-  res.status(500).json({
-    success: false,
-    error: err.message || 'Internal Server Error',
+  res.json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development',
   });
 });
 
+// 404 handler (must be after all routes)
+app.use(notFoundHandler);
+
+// Global error handler (must be last)
+app.use(errorHandler);
+
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`
+╔═══════════════════════════════════════════════╗
+║  Screen Budget API Server                     ║
+║  Port: ${PORT}                                    ║
+║  Environment: ${process.env.NODE_ENV || 'development'}                   ║
+║  Time: ${new Date().toISOString()}  ║
+╚═══════════════════════════════════════════════╝
+  `);
 });
 
 export default app;
