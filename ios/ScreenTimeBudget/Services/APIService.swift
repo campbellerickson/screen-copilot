@@ -7,6 +7,32 @@ class APIService {
 
     // MARK: - Private Helpers
 
+    private func addAuthHeader(to request: inout URLRequest) {
+        if let token = AuthManager.shared.authToken {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+    }
+
+    func performAuthRequest<T: Decodable>(
+        path: String,
+        method: String,
+        body: [String: Any]? = nil
+    ) async throws -> T {
+        guard let url = URL(string: "\(baseURL)\(path)") else {
+            throw APIError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = method
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        if let body = body {
+            request.httpBody = try JSONSerialization.data(withJSONObject: body)
+        }
+
+        return try await performRequest(request, retries: maxRetries)
+    }
+
     private func performRequest<T: Decodable>(
         _ request: URLRequest,
         retries: Int = 3
@@ -88,6 +114,7 @@ class APIService {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        addAuthHeader(to: &request)
         request.httpBody = try JSONSerialization.data(withJSONObject: body)
 
         struct Response: Codable {
@@ -107,6 +134,7 @@ class APIService {
 
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
+        addAuthHeader(to: &request)
 
         struct Response: Codable {
             let success: Bool
@@ -146,6 +174,7 @@ class APIService {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        addAuthHeader(to: &request)
         request.httpBody = try JSONSerialization.data(withJSONObject: body)
 
         struct Response: Codable {
@@ -173,6 +202,7 @@ class APIService {
 
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
+        addAuthHeader(to: &request)
 
         struct Response: Codable {
             let success: Bool
@@ -192,6 +222,7 @@ class APIService {
 
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
+        addAuthHeader(to: &request)
 
         struct Response: Codable {
             let success: Bool
@@ -209,6 +240,7 @@ class APIService {
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
+        addAuthHeader(to: &request)
 
         struct Response: Codable {
             let success: Bool

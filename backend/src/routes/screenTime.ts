@@ -7,8 +7,13 @@ import {
   validateUserId,
   validateUpdateCategoryBudget,
 } from '../middleware/validation';
+import { authenticate, requireSubscription } from '../middleware/auth';
 
 const router = Router();
+
+// All routes require authentication and active subscription
+router.use(authenticate);
+router.use(requireSubscription);
 
 // Budget routes
 router.post('/budgets', validateCreateBudget, budgetController.createBudget);

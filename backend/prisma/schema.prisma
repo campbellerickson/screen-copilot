@@ -7,20 +7,61 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Users table (simplified - assuming you have existing user management)
+// Users table
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password      String?   // Hashed password (null for Apple Sign In only)
+  name          String?
+  appleId       String?   @unique // Apple Sign In identifier
+  profileImage  String?   // URL to profile image
+  lastLoginAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
   screenTimeBudgets ScreenTimeBudget[]
   userApps          UserApp[]
   dailyUsages       DailyAppUsage[]
   budgetAlerts      BudgetAlert[]
+  subscription      Subscription?
 
   @@map("users")
+}
+
+// Subscription management
+model Subscription {
+  id                    String    @id @default(uuid())
+  userId                String    @unique
+  status                String    @db.VarChar(20) // 'trial', 'active', 'expired', 'cancelled'
+  platform              String    @db.VarChar(20) // 'ios', 'android', 'web'
+
+  // Trial tracking
+  trialStartDate        DateTime?
+  trialEndDate          DateTime?
+
+  // Subscription tracking
+  subscriptionStartDate DateTime?
+  subscriptionEndDate   DateTime?
+  renewalDate           DateTime?
+
+  // Payment provider info
+  stripeCustomerId      String?   @unique // For web subscriptions
+  stripeSubscriptionId  String?   @unique
+  appleTransactionId    String?   @unique // For iOS subscriptions
+  appleOriginalTransactionId String? @unique
+
+  // Pricing
+  priceUSD              Decimal   @default(0.99) @db.Decimal(5, 2)
+  currency              String    @default("USD") @db.VarChar(3)
+
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@map("subscriptions")
 }
 
 // Screen Time Budgets

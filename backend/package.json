@@ -14,16 +14,26 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio"
   },
-  "keywords": ["screen-time", "budget", "api"],
+  "keywords": [
+    "screen-time",
+    "budget",
+    "api"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^5.0.0",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "apple-signin-auth": "^2.0.0",
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "helmet": "^7.0.0",
-    "morgan": "^1.10.0"
+    "jsonwebtoken": "^9.0.3",
+    "morgan": "^1.10.0",
+    "stripe": "^20.1.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.13",
