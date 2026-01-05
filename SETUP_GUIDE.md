@@ -62,15 +62,20 @@ Your database schema is defined in `backend/prisma/schema.prisma`. You need to:
 
 2. **Edit `.env` file:**
    ```env
-   DATABASE_URL="postgresql://postgres:YOUR_PASSWORD@db.xxxxx.supabase.co:5432/postgres?pgbouncer=true&connection_limit=1"
+   # Database - USE POOLED CONNECTION (Required for Vercel)
+   # Get the exact connection string from Supabase Dashboard → Settings → Database → Connection Pooling
+   DATABASE_URL="postgresql://postgres.jqfyunukinwglaitjkfr:wHSCHAPS2017!@aws-0-[region].pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1"
    NODE_ENV=development
    JWT_SECRET="your-random-jwt-secret-key-here"
    CORS_ORIGIN="*"
    ```
 
-   **Important Notes:**
-   - Use the connection string from Supabase (replace `YOUR_PASSWORD`)
-   - Add `?pgbouncer=true&connection_limit=1` at the end for connection pooling
+   **⚠️ CRITICAL Notes:**
+   - **MUST use pooled connection** (port 6543) - Direct connection (5432) won't work with Vercel
+   - Get the exact connection string from Supabase Dashboard → Connection Pooling → Transaction mode
+   - Replace `[region]` with your actual region (e.g., `us-east-1`, `us-west-1`)
+   - Replace `[YOUR-PASSWORD]` with `wHSCHAPS2017!`
+   - Use the **SAME pooled connection string for both local dev AND Vercel**
    - Generate a secure JWT_SECRET (you can use: `openssl rand -base64 32`)
 
 3. **Install dependencies and generate Prisma client:**
@@ -94,24 +99,33 @@ Your database schema is defined in `backend/prisma/schema.prisma`. You need to:
    ```
    This opens Prisma Studio in your browser where you can view your database tables.
 
-### Step 4: Set Up Supabase Connection Pooling (Recommended)
+### Step 4: Set Up Supabase Connection Pooling (⚠️ REQUIRED)
 
-For serverless environments (Vercel), use connection pooling:
+**CRITICAL:** Vercel is IPv4-only and your Free Plan doesn't support IPv4 direct connections. You **MUST use connection pooling** for both local development AND Vercel.
 
 1. In Supabase dashboard, go to **Settings** → **Database**
-2. Find **"Connection Pooling"** section
-3. Copy the **"Connection string"** under "Transaction mode"
-4. Use this pooled connection string for production (Vercel)
+2. Scroll to **"Connection Pooling"** section (you should see "SHARED POOLER")
+3. Look for **"Connection string"** or connection info
+4. Copy the **"Transaction mode"** connection string (this is for serverless/Vercel)
+5. The format should be:
+   ```
+   postgresql://postgres.[project-ref]:[password]@[pooler-host]:6543/postgres
+   ```
+6. Replace `[password]` with `wHSCHAPS2017!`
+7. Add parameters: `?pgbouncer=true&connection_limit=1`
 
-The pooled connection string looks like:
+**Your pooled connection string should look like:**
 ```
-postgresql://postgres.jqfyunukinwglaitjkfr:wHSCHAPS2017!@aws-0-us-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1
+postgresql://postgres.jqfyunukinwglaitjkfr:wHSCHAPS2017!@aws-0-[region].pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1
 ```
 
-**⚠️ Important:** 
-- Replace `[YOUR-PASSWORD]` with your actual password: `wHSCHAPS2017!`
-- The project reference in the pooled URL is: `jqfyunukinwglaitjkfr`
-- Always use pooled connection for Vercel/serverless deployments!
+**⚠️ Important Notes:**
+- **Use this SAME pooled connection for BOTH local dev AND Vercel**
+- Port is **6543** (pooler), not 5432 (direct)
+- Host is `pooler.supabase.com`, not `db.xxxxx.supabase.co`
+- Replace `[region]` with your actual region (check Supabase project settings)
+- The project reference is: `jqfyunukinwglaitjkfr`
+- Direct connection (port 5432) will **NOT work** with Vercel due to IPv4 compatibility
 
 ---
 
