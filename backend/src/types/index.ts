@@ -1,33 +1,14 @@
-import { Request } from 'express';
-
-export enum CategoryType {
-  SOCIAL_MEDIA = 'social_media',
-  ENTERTAINMENT = 'entertainment',
-  GAMING = 'gaming',
-  PRODUCTIVITY = 'productivity',
-  SHOPPING = 'shopping',
-  NEWS_READING = 'news_reading',
-  HEALTH_FITNESS = 'health_fitness',
-  OTHER = 'other'
+export interface CategoryBudgetInput {
+  categoryType: string;
+  categoryName: string;
+  monthlyHours: number;
+  isExcluded?: boolean;
 }
 
 export interface CreateBudgetRequest {
   userId: string;
-  monthYear: string; // ISO date string: "2025-01-01"
+  monthYear: string;
   categories: CategoryBudgetInput[];
-}
-
-export interface CategoryBudgetInput {
-  categoryType: CategoryType;
-  categoryName: string;
-  monthlyHours: number;
-  isExcluded: boolean;
-}
-
-export interface SyncUsageRequest {
-  userId: string;
-  usageDate: string; // ISO date string: "2025-01-15"
-  apps: AppUsageInput[];
 }
 
 export interface AppUsageInput {
@@ -36,12 +17,10 @@ export interface AppUsageInput {
   totalMinutes: number;
 }
 
-export interface BudgetStatusResponse {
-  date: string;
-  totalMinutes: number;
-  categories: {
-    [key: string]: CategoryStatus;
-  };
+export interface SyncUsageRequest {
+  userId: string;
+  usageDate: string;
+  apps: AppUsageInput[];
 }
 
 export interface CategoryStatus {
@@ -49,13 +28,29 @@ export interface CategoryStatus {
   dailyBudget: number;
   monthlyBudget: number;
   monthlyUsed: number;
-  status: 'under' | 'over' | 'at_limit';
+  status: 'under' | 'at_limit' | 'over';
   apps: AppMinutes[];
+}
+
+export interface BudgetStatusResponse {
+  date: string;
+  totalMinutes: number;
+  categories: { [key: string]: CategoryStatus };
 }
 
 export interface AppMinutes {
   name: string;
   minutes: number;
+}
+
+export interface NotificationAlert {
+  type: 'daily_overage' | 'monthly_overage';
+  categoryType: string;
+  categoryName: string;
+  overageMinutes: number;
+  usedMinutes: number;
+  budgetMinutes: number;
+  message: string;
 }
 
 export interface SyncResponse {
@@ -69,6 +64,7 @@ export interface SyncResponse {
     };
   };
   alertsTriggered: AlertDTO[];
+  notifications?: NotificationAlert[]; // Added for notification support
 }
 
 export interface AlertDTO {
@@ -76,6 +72,12 @@ export interface AlertDTO {
   overageMinutes: number;
 }
 
-export interface AuthRequest extends Request {
-  userId?: string;
-}
+export type CategoryType =
+  | 'social_media'
+  | 'entertainment'
+  | 'gaming'
+  | 'productivity'
+  | 'shopping'
+  | 'news_reading'
+  | 'health_fitness'
+  | 'other';

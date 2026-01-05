@@ -17,22 +17,27 @@ export const syncUsage = async (req: Request, res: Response) => {
       apps
     );
 
-    // Get updated budget status
+    // Get updated budget status (includes monthly usage)
     const budgetStatus = await usageService.getDailyUsage(
       userId,
       new Date(usageDate)
     );
 
-    // Check for alerts
+    // Calculate category usage from budget status
     const categoryUsage: { [key: string]: number } = {};
+    const monthlyUsage: { [key: string]: number } = {};
+    
     for (const [category, data] of Object.entries(budgetStatus.categories)) {
       categoryUsage[category] = data.totalMinutes;
+      monthlyUsage[category] = data.monthlyUsed;
     }
 
-    const alerts = await alertService.checkAndTriggerAlerts(
+    // Check for alerts and notifications (daily and monthly)
+    const { alerts, notifications } = await alertService.checkAndTriggerAlerts(
       userId,
       new Date(usageDate),
-      categoryUsage
+      categoryUsage,
+      monthlyUsage
     );
 
     res.json({
@@ -41,6 +46,7 @@ export const syncUsage = async (req: Request, res: Response) => {
         synced: syncResult.synced,
         budgetStatus: budgetStatus.categories,
         alertsTriggered: alerts,
+        notifications, // Include notification data for iOS to schedule
       },
     });
   } catch (error: any) {

@@ -247,6 +247,12 @@ class APIService {
         }
 
         let response: Response = try await performRequest(request)
+        
+        // Schedule notifications if any
+        if let notifications = response.data.notifications, !notifications.isEmpty {
+            NotificationService.shared.scheduleNotifications(for: notifications)
+        }
+        
         Analytics.track("usage_synced", properties: [
             "userId": userId,
             "appsCount": apps.count,

@@ -39,6 +39,7 @@ struct SyncResponse: Codable {
     let synced: Int
     let budgetStatus: [String: CategoryBudgetStatus]
     let alertsTriggered: [AlertDTO]
+    let notifications: [NotificationAlert]?
 }
 
 struct CategoryBudgetStatus: Codable {
@@ -51,4 +52,19 @@ struct CategoryBudgetStatus: Codable {
 struct AlertDTO: Codable {
     let category: String
     let overageMinutes: Int
+}
+
+struct NotificationAlert: Codable {
+    let type: NotificationType
+    let categoryType: String
+    let categoryName: String
+    let overageMinutes: Int
+    let usedMinutes: Int
+    let budgetMinutes: Int
+    let message: String
+}
+
+enum NotificationType: String, Codable {
+    case dailyOverage = "daily_overage"
+    case monthlyOverage = "monthly_overage"
 }
