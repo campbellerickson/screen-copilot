@@ -20,7 +20,7 @@ router.post('/login', authController.login);
  * POST /api/v1/auth/apple
  * Sign in with Apple
  */
-router.post('/apple', authController.appleSignIn);
+router.post('/apple', authController.handleAppleSignIn);
 
 /**
  * GET /api/v1/auth/me

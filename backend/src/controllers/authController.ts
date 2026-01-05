@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
-import appleSignIn from 'apple-signin-auth';
+import appleSigninAuth from 'apple-signin-auth';
 import {
   hashPassword,
   comparePassword,
@@ -193,7 +193,7 @@ export async function login(req: Request, res: Response) {
  * Sign in with Apple
  * POST /api/v1/auth/apple
  */
-export async function appleSignIn(req: Request, res: Response) {
+export async function handleAppleSignIn(req: Request, res: Response) {
   try {
     const { identityToken, user: appleUser } = req.body;
 
@@ -207,7 +207,7 @@ export async function appleSignIn(req: Request, res: Response) {
     // Verify Apple identity token
     let appleResponse;
     try {
-      appleResponse = await appleSignIn.verifyIdToken(identityToken, {
+      appleResponse = await appleSigninAuth.verifyIdToken(identityToken, {
         audience: process.env.APPLE_BUNDLE_ID || 'com.campbell.ScreenTimeBudget',
         ignoreExpiration: false,
       });
