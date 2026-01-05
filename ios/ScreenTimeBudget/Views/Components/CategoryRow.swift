@@ -44,34 +44,48 @@ struct CategoryRow: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack(alignment: .center) {
                 // Icon and name
-                HStack(spacing: 12) {
-                    Text(icon)
-                        .font(.system(size: 32))
+                HStack(spacing: 14) {
+                    ZStack {
+                        Circle()
+                            .fill(progressColor.opacity(0.15))
+                            .frame(width: 50, height: 50)
 
-                    Text(name)
-                        .font(.system(size: 15, weight: .medium))
-                        .foregroundColor(.white.opacity(0.8))
+                        Text(icon)
+                            .font(.system(size: 28))
+                    }
+
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(name)
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundColor(.white)
+
+                        Text(budgetText)
+                            .font(.system(size: 13))
+                            .foregroundColor(.white.opacity(0.5))
+                    }
                 }
 
                 Spacer()
 
                 // Time used - larger and bolder
-                Text(formattedTime)
-                    .font(.system(size: 24, weight: .bold))
-                    .foregroundColor(progressColor)
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text(formattedTime)
+                        .font(.system(size: 26, weight: .bold))
+                        .foregroundColor(progressColor)
+
+                    if !isUnlimited {
+                        Text("\(Int(progress * 100))%")
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundColor(progressColor.opacity(0.7))
+                    }
+                }
             }
 
-            // Progress bar - thicker
-            VStack(alignment: .leading, spacing: 6) {
-                ProgressBar(value: progress, color: progressColor, height: 8)
-
-                Text(budgetText)
-                    .font(.system(size: 13))
-                    .foregroundColor(.white.opacity(0.5))
-            }
+            // Progress bar - thicker and more prominent
+            ProgressBar(value: progress, color: progressColor, height: 10)
         }
     }
 }

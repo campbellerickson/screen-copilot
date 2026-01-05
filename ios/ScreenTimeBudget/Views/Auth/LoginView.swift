@@ -20,52 +20,70 @@ struct LoginView: View {
             ScrollView {
                 VStack(spacing: 32) {
                     // Logo and title
-                    VStack(spacing: 16) {
+                    VStack(spacing: 20) {
                         Image(systemName: "hourglass")
-                            .font(.system(size: 64))
+                            .font(.system(size: 72))
                             .foregroundColor(.blue)
+                            .shadow(color: .blue.opacity(0.3), radius: 20, x: 0, y: 10)
 
                         Text("Screen Budget")
-                            .font(.system(size: 32, weight: .bold))
+                            .font(.system(size: 36, weight: .bold))
                             .foregroundColor(.white)
 
                         Text("Take control of your screen time")
-                            .font(.system(size: 16))
-                            .foregroundColor(.white.opacity(0.6))
+                            .font(.system(size: 17))
+                            .foregroundColor(.white.opacity(0.7))
+                            .tracking(0.5)
                     }
-                    .padding(.top, 60)
+                    .padding(.top, 80)
 
                     // Email/Password form
                     VStack(spacing: 20) {
                         // Email field
-                        VStack(alignment: .leading, spacing: 8) {
+                        VStack(alignment: .leading, spacing: 10) {
                             Text("Email")
-                                .font(.system(size: 14, weight: .medium))
-                                .foregroundColor(.white.opacity(0.8))
+                                .font(.system(size: 15, weight: .semibold))
+                                .foregroundColor(.white.opacity(0.9))
+                                .tracking(0.3)
 
-                            TextField("", text: $viewModel.email)
+                            TextField("your@email.com", text: $viewModel.email)
                                 .textInputAutocapitalization(.never)
                                 .autocorrectionDisabled()
                                 .keyboardType(.emailAddress)
                                 .textContentType(.emailAddress)
-                                .padding()
-                                .background(Color.white.opacity(0.1))
-                                .cornerRadius(12)
+                                .padding(16)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 14)
+                                        .fill(Color.white.opacity(0.1))
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 14)
+                                                .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                                        )
+                                )
                                 .foregroundColor(.white)
+                                .font(.system(size: 17))
                         }
 
                         // Password field
-                        VStack(alignment: .leading, spacing: 8) {
+                        VStack(alignment: .leading, spacing: 10) {
                             Text("Password")
-                                .font(.system(size: 14, weight: .medium))
-                                .foregroundColor(.white.opacity(0.8))
+                                .font(.system(size: 15, weight: .semibold))
+                                .foregroundColor(.white.opacity(0.9))
+                                .tracking(0.3)
 
-                            SecureField("", text: $viewModel.password)
+                            SecureField("Enter your password", text: $viewModel.password)
                                 .textContentType(.password)
-                                .padding()
-                                .background(Color.white.opacity(0.1))
-                                .cornerRadius(12)
+                                .padding(16)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 14)
+                                        .fill(Color.white.opacity(0.1))
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 14)
+                                                .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                                        )
+                                )
                                 .foregroundColor(.white)
+                                .font(.system(size: 17))
                         }
 
                         // Error message
@@ -88,17 +106,27 @@ struct LoginView: View {
                                         .tint(.white)
                                 } else {
                                     Text("Log In")
-                                        .font(.system(size: 17, weight: .semibold))
+                                        .font(.system(size: 18, weight: .bold))
+                                        .tracking(0.5)
                                 }
                             }
                             .frame(maxWidth: .infinity)
-                            .frame(height: 56)
-                            .background(Color.blue)
+                            .frame(height: 58)
+                            .background(
+                                LinearGradient(
+                                    colors: viewModel.isFormValid ?
+                                        [Color.blue, Color.blue.opacity(0.8)] :
+                                        [Color.gray.opacity(0.3), Color.gray.opacity(0.2)],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
                             .foregroundColor(.white)
-                            .cornerRadius(12)
+                            .cornerRadius(14)
+                            .shadow(color: viewModel.isFormValid ? Color.blue.opacity(0.3) : Color.clear, radius: 12, x: 0, y: 6)
                         }
                         .disabled(viewModel.isLoading || !viewModel.isFormValid)
-                        .opacity(viewModel.isFormValid ? 1.0 : 0.5)
+                        .animation(.easeInOut(duration: 0.2), value: viewModel.isFormValid)
                     }
                     .padding(.horizontal, 32)
 

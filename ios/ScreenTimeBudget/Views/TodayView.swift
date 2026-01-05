@@ -49,60 +49,96 @@ struct TodayView: View {
     // MARK: - Summary Card
 
     private var summaryCard: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 24) {
             Text("TODAY'S SCREEN TIME")
-                .font(.system(size: 13, weight: .semibold))
-                .foregroundColor(.white.opacity(0.6))
-                .tracking(1.5)
+                .font(.system(size: 14, weight: .bold))
+                .foregroundColor(.white.opacity(0.7))
+                .tracking(2.0)
 
             // Time display - large and bold
-            HStack(alignment: .firstTextBaseline, spacing: 6) {
+            HStack(alignment: .firstTextBaseline, spacing: 8) {
                 Text(viewModel.timeUsedFormatted)
-                    .font(.system(size: 64, weight: .bold))
+                    .font(.system(size: 68, weight: .bold))
                     .foregroundColor(.white)
 
-                Text("/ \(viewModel.dailyBudgetFormatted)")
-                    .font(.system(size: 28, weight: .medium))
-                    .foregroundColor(.white.opacity(0.5))
-                    .offset(y: -8)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("/")
+                        .font(.system(size: 32, weight: .medium))
+                        .foregroundColor(.white.opacity(0.4))
+                    Text(viewModel.dailyBudgetFormatted)
+                        .font(.system(size: 28, weight: .medium))
+                        .foregroundColor(.white.opacity(0.5))
+                }
+                .offset(y: -4)
             }
 
             // Progress bar - thicker and more prominent
-            ProgressBar(value: viewModel.progress, color: viewModel.statusColor, height: 10)
-                .frame(height: 10)
-                .padding(.horizontal, 30)
+            VStack(spacing: 8) {
+                ProgressBar(value: viewModel.progress, color: viewModel.statusColor, height: 12)
+                    .frame(height: 12)
+                    .padding(.horizontal, 20)
+
+                HStack {
+                    Text("0h")
+                        .font(.system(size: 12))
+                        .foregroundColor(.white.opacity(0.4))
+                    Spacer()
+                    Text(viewModel.dailyBudgetFormatted)
+                        .font(.system(size: 12))
+                        .foregroundColor(.white.opacity(0.4))
+                }
+                .padding(.horizontal, 20)
+            }
 
             // Remaining time
             Text(viewModel.remainingText)
-                .font(.system(size: 18, weight: .semibold))
+                .font(.system(size: 19, weight: .semibold))
                 .foregroundColor(viewModel.statusColor)
+                .padding(.horizontal, 24)
+                .padding(.vertical, 12)
+                .background(
+                    Capsule()
+                        .fill(viewModel.statusColor.opacity(0.15))
+                )
         }
-        .padding(.vertical, 40)
-        .padding(.horizontal, 24)
+        .padding(.vertical, 44)
+        .padding(.horizontal, 28)
         .background(
-            RoundedRectangle(cornerRadius: 24)
+            RoundedRectangle(cornerRadius: 28)
                 .fill(
                     LinearGradient(
                         colors: [
-                            Color(red: 0.35, green: 0.35, blue: 0.36),
-                            Color(red: 0.25, green: 0.25, blue: 0.26)
+                            Color(red: 0.38, green: 0.38, blue: 0.39),
+                            Color(red: 0.28, green: 0.28, blue: 0.29)
                         ],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
                 )
-                .shadow(color: .black.opacity(0.3), radius: 20, x: 0, y: 10)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 28)
+                        .stroke(
+                            LinearGradient(
+                                colors: [Color.white.opacity(0.2), Color.white.opacity(0.05)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            ),
+                            lineWidth: 1
+                        )
+                )
+                .shadow(color: .black.opacity(0.4), radius: 25, x: 0, y: 12)
         )
     }
 
     // MARK: - Category Section
 
     private var categorySection: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 18) {
             Text("TODAY BY CATEGORY")
-                .font(.system(size: 16, weight: .bold))
-                .foregroundColor(.white)
-                .tracking(1.2)
+                .font(.system(size: 15, weight: .bold))
+                .foregroundColor(.white.opacity(0.9))
+                .tracking(1.5)
+                .padding(.horizontal, 4)
 
             if viewModel.categories.isEmpty {
                 // Empty state

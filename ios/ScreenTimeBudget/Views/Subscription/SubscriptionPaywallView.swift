@@ -29,19 +29,34 @@ struct SubscriptionPaywallView: View {
             ScrollView {
                 VStack(spacing: 32) {
                     // Header
-                    VStack(spacing: 16) {
-                        Image(systemName: "crown.fill")
-                            .font(.system(size: 64))
-                            .foregroundColor(.yellow)
-                            .padding(.top, 60)
+                    VStack(spacing: 20) {
+                        ZStack {
+                            Circle()
+                                .fill(
+                                    RadialGradient(
+                                        colors: [Color.yellow.opacity(0.3), Color.clear],
+                                        center: .center,
+                                        startRadius: 20,
+                                        endRadius: 80
+                                    )
+                                )
+                                .frame(width: 120, height: 120)
+
+                            Image(systemName: "crown.fill")
+                                .font(.system(size: 72))
+                                .foregroundColor(.yellow)
+                                .shadow(color: .yellow.opacity(0.5), radius: 20, x: 0, y: 10)
+                        }
+                        .padding(.top, 70)
 
                         Text("Screen Budget Pro")
-                            .font(.system(size: 32, weight: .bold))
+                            .font(.system(size: 36, weight: .bold))
                             .foregroundColor(.white)
 
                         Text("Take control of your digital wellbeing")
-                            .font(.system(size: 17))
+                            .font(.system(size: 18))
                             .foregroundColor(.white.opacity(0.8))
+                            .tracking(0.5)
                             .multilineTextAlignment(.center)
                     }
 
@@ -74,36 +89,49 @@ struct SubscriptionPaywallView: View {
                     .padding(.horizontal, 32)
 
                     // Pricing card
-                    VStack(spacing: 20) {
+                    VStack(spacing: 24) {
                         // Trial badge
                         HStack {
                             Spacer()
-                            Text("7-DAY FREE TRIAL")
-                                .font(.system(size: 12, weight: .bold))
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 16)
-                                .padding(.vertical, 8)
-                                .background(
-                                    Capsule()
-                                        .fill(Color.green)
-                                )
+                            HStack(spacing: 6) {
+                                Image(systemName: "gift.fill")
+                                    .font(.system(size: 14))
+                                Text("7-DAY FREE TRIAL")
+                                    .font(.system(size: 13, weight: .bold))
+                                    .tracking(1.2)
+                            }
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 10)
+                            .background(
+                                Capsule()
+                                    .fill(
+                                        LinearGradient(
+                                            colors: [Color.green, Color.green.opacity(0.8)],
+                                            startPoint: .leading,
+                                            endPoint: .trailing
+                                        )
+                                    )
+                                    .shadow(color: .green.opacity(0.4), radius: 10, x: 0, y: 5)
+                            )
                             Spacer()
                         }
 
                         // Price
-                        VStack(spacing: 8) {
+                        VStack(spacing: 12) {
                             HStack(alignment: .firstTextBaseline, spacing: 4) {
                                 Text("$0.99")
-                                    .font(.system(size: 48, weight: .bold))
+                                    .font(.system(size: 56, weight: .bold))
                                     .foregroundColor(.white)
                                 Text("/month")
-                                    .font(.system(size: 18))
+                                    .font(.system(size: 20, weight: .medium))
                                     .foregroundColor(.white.opacity(0.6))
                             }
 
                             Text("Cancel anytime")
-                                .font(.system(size: 14))
+                                .font(.system(size: 15))
                                 .foregroundColor(.white.opacity(0.6))
+                                .tracking(0.5)
                         }
 
                         // Trial info
@@ -165,28 +193,37 @@ struct SubscriptionPaywallView: View {
                             await viewModel.subscribe()
                         }
                     }) {
-                        HStack {
+                        HStack(spacing: 10) {
                             if viewModel.isLoading {
                                 ProgressView()
                                     .tint(.white)
                             } else {
+                                Image(systemName: "sparkles")
+                                    .font(.system(size: 18))
                                 Text("Start Free Trial")
-                                    .font(.system(size: 18, weight: .bold))
+                                    .font(.system(size: 19, weight: .bold))
+                                    .tracking(0.5)
                             }
                         }
                         .frame(maxWidth: .infinity)
-                        .frame(height: 60)
+                        .frame(height: 64)
                         .background(
                             LinearGradient(
-                                colors: [Color.blue, Color.purple],
-                                startPoint: .leading,
-                                endPoint: .trailing
+                                colors: [
+                                    Color(red: 0.3, green: 0.4, blue: 1.0),
+                                    Color(red: 0.5, green: 0.3, blue: 0.9)
+                                ],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
                             )
                         )
                         .foregroundColor(.white)
-                        .cornerRadius(16)
+                        .cornerRadius(18)
+                        .shadow(color: Color.blue.opacity(0.4), radius: 15, x: 0, y: 8)
                     }
                     .disabled(viewModel.isLoading)
+                    .scaleEffect(viewModel.isLoading ? 0.95 : 1.0)
+                    .animation(.spring(response: 0.3, dampingFraction: 0.7), value: viewModel.isLoading)
                     .padding(.horizontal, 24)
 
                     // Restore purchases

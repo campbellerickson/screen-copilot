@@ -22,16 +22,21 @@ struct SignupView: View {
                 ScrollView {
                     VStack(spacing: 28) {
                         // Header
-                        VStack(spacing: 12) {
+                        VStack(spacing: 16) {
                             Text("Create Account")
-                                .font(.system(size: 28, weight: .bold))
+                                .font(.system(size: 32, weight: .bold))
                                 .foregroundColor(.white)
 
-                            Text("Start your 7-day free trial")
-                                .font(.system(size: 16))
-                                .foregroundColor(.white.opacity(0.6))
+                            HStack(spacing: 6) {
+                                Image(systemName: "gift.fill")
+                                    .foregroundColor(.green)
+                                Text("Start your 7-day free trial")
+                                    .font(.system(size: 17))
+                                    .foregroundColor(.white.opacity(0.7))
+                                    .tracking(0.5)
+                            }
                         }
-                        .padding(.top, 40)
+                        .padding(.top, 50)
 
                         // Form fields
                         VStack(spacing: 20) {
@@ -115,30 +120,48 @@ struct SignupView: View {
                         .padding(.horizontal, 32)
 
                         // Trial info
-                        VStack(spacing: 8) {
-                            HStack(spacing: 8) {
+                        VStack(spacing: 12) {
+                            HStack(spacing: 10) {
                                 Image(systemName: "checkmark.circle.fill")
                                     .foregroundColor(.green)
+                                    .font(.system(size: 18))
                                 Text("7 days free trial")
+                                    .font(.system(size: 16, weight: .medium))
+                                Spacer()
                             }
-                            HStack(spacing: 8) {
+                            HStack(spacing: 10) {
                                 Image(systemName: "checkmark.circle.fill")
                                     .foregroundColor(.green)
+                                    .font(.system(size: 18))
                                 Text("$0.99/month after trial")
+                                    .font(.system(size: 16, weight: .medium))
+                                Spacer()
                             }
-                            HStack(spacing: 8) {
+                            HStack(spacing: 10) {
                                 Image(systemName: "checkmark.circle.fill")
                                     .foregroundColor(.green)
+                                    .font(.system(size: 18))
                                 Text("Cancel anytime")
+                                    .font(.system(size: 16, weight: .medium))
+                                Spacer()
                             }
                         }
-                        .font(.system(size: 14))
-                        .foregroundColor(.white.opacity(0.8))
-                        .padding(.vertical, 16)
+                        .foregroundColor(.white.opacity(0.9))
+                        .padding(.vertical, 20)
                         .padding(.horizontal, 24)
                         .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(Color.white.opacity(0.05))
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(
+                                    LinearGradient(
+                                        colors: [Color.green.opacity(0.15), Color.green.opacity(0.05)],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
+                                )
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .stroke(Color.green.opacity(0.3), lineWidth: 1)
+                                )
                         )
                         .padding(.horizontal, 32)
 
@@ -162,18 +185,30 @@ struct SignupView: View {
                                     ProgressView()
                                         .tint(.white)
                                 } else {
+                                    Image(systemName: "gift.fill")
+                                        .font(.system(size: 16))
                                     Text("Start Free Trial")
-                                        .font(.system(size: 17, weight: .semibold))
+                                        .font(.system(size: 18, weight: .bold))
+                                        .tracking(0.5)
                                 }
                             }
                             .frame(maxWidth: .infinity)
-                            .frame(height: 56)
-                            .background(Color.blue)
+                            .frame(height: 58)
+                            .background(
+                                LinearGradient(
+                                    colors: viewModel.isFormValid ?
+                                        [Color.green, Color.green.opacity(0.8)] :
+                                        [Color.gray.opacity(0.3), Color.gray.opacity(0.2)],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
                             .foregroundColor(.white)
-                            .cornerRadius(12)
+                            .cornerRadius(14)
+                            .shadow(color: viewModel.isFormValid ? Color.green.opacity(0.3) : Color.clear, radius: 12, x: 0, y: 6)
                         }
                         .disabled(viewModel.isLoading || !viewModel.isFormValid)
-                        .opacity(viewModel.isFormValid ? 1.0 : 0.5)
+                        .animation(.easeInOut(duration: 0.2), value: viewModel.isFormValid)
                         .padding(.horizontal, 32)
 
                         // Divider
