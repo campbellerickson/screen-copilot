@@ -127,14 +127,13 @@ export async function validateIOSReceipt(req: Request, res: Response) {
         platform: 'ios',
         subscriptionStartDate: now,
         renewalDate: renewalDate,
-        appleTransactionId: transactionId,
-        appleOriginalTransactionId: transactionId,
+        iosTransactionId: transactionId,
       },
       update: {
         status: 'active',
         subscriptionStartDate: now,
         renewalDate: renewalDate,
-        appleTransactionId: transactionId,
+        iosTransactionId: transactionId,
       },
     });
 
@@ -268,11 +267,11 @@ export async function handleStripeWebhook(req: Request, res: Response) {
       case 'customer.subscription.created':
       case 'customer.subscription.updated': {
         const subscription = event.data.object as Stripe.Subscription;
-        const userId = subscription.metadata.userId;
+        const userId = subscription.metadata?.userId;
 
         if (userId) {
-          const renewalDate = new Date(subscription.current_period_end * 1000);
-          const endDate = new Date(subscription.current_period_end * 1000);
+          const renewalDate = new Date((subscription as any).current_period_end * 1000);
+          const endDate = new Date((subscription as any).current_period_end * 1000);
 
           await prisma.subscription.upsert({
             where: { userId },
@@ -282,7 +281,7 @@ export async function handleStripeWebhook(req: Request, res: Response) {
               platform: 'web',
               stripeCustomerId: subscription.customer as string,
               stripeSubscriptionId: subscription.id,
-              subscriptionStartDate: new Date(subscription.current_period_start * 1000),
+              subscriptionStartDate: new Date((subscription as any).current_period_start * 1000),
               subscriptionEndDate: endDate,
               renewalDate: renewalDate,
             },
@@ -312,7 +311,7 @@ export async function handleStripeWebhook(req: Request, res: Response) {
 
       case 'invoice.payment_failed': {
         const invoice = event.data.object as Stripe.Invoice;
-        const subscription = invoice.subscription as string;
+        const subscription = (invoice as any).subscription as string;
 
         if (subscription) {
           const sub = await stripe.subscriptions.retrieve(subscription);
