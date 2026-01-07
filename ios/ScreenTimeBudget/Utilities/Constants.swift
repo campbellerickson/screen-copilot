@@ -10,8 +10,8 @@ struct Constants {
     // For physical device, uncomment and use:
     // static let baseURL = "http://192.168.68.67:3000/api/v1"
     #else
-    // Production - Supabase Edge Functions
-    static let baseURL = "https://jqfyunukinwglaitjkfr.supabase.co/functions/v1"
+    // Production - Vercel Deployment
+    static let baseURL = "https://screen-copilot-ysge.vercel.app/api/v1"
     #endif
 
     // Background Tasks
