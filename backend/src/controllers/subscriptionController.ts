@@ -200,8 +200,8 @@ export async function createStripeCheckout(req: Request, res: Response) {
           price_data: {
             currency: 'usd',
             product_data: {
-              name: 'Screen Budget Pro',
-              description: 'Monthly subscription to Screen Budget',
+              name: 'Screen Time Copilot Pro',
+              description: 'Monthly subscription to Screen Time Copilot',
             },
             unit_amount: 99, // $0.99 in cents
             recurring: {

@@ -9,12 +9,16 @@ const router = Router();
  * Sign up with email and password
  */
 router.post('/signup', authController.signup);
+// Alias for iOS app compatibility
+router.post('/auth-signup', authController.signup);
 
 /**
  * POST /api/v1/auth/login
  * Login with email and password
  */
 router.post('/login', authController.login);
+// Alias for iOS app compatibility
+router.post('/auth-login', authController.login);
 
 /**
  * POST /api/v1/auth/apple

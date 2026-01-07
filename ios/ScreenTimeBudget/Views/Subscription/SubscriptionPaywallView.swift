@@ -49,7 +49,7 @@ struct SubscriptionPaywallView: View {
                         }
                         .padding(.top, 70)
 
-                        Text("Screen Budget Pro")
+                        Text("Screen Time Copilot Pro")
                             .font(.system(size: 36, weight: .bold))
                             .foregroundColor(.white)
 

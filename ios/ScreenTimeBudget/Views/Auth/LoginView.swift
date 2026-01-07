@@ -26,7 +26,7 @@ struct LoginView: View {
                             .foregroundColor(.blue)
                             .shadow(color: .blue.opacity(0.3), radius: 20, x: 0, y: 10)
 
-                        Text("Screen Budget")
+                        Text("Screen Time Copilot")
                             .font(.system(size: 36, weight: .bold))
                             .foregroundColor(.white)
 

@@ -10,7 +10,7 @@ import Foundation
 class UserManager {
     static let shared = UserManager()
 
-    private let userIdKey = "com.copilot.screentime.userId"
+    private let userIdKey = "com.campbell.ScreenTimeCopilot.userId"
 
     private init() {}
 

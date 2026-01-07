@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.copilot.screentime</string>
+		<string>group.com.campbell.ScreenTimeCopilot</string>
 	</array>
 </dict>
 </plist>

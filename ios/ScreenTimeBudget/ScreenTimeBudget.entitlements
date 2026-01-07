@@ -3,10 +3,12 @@
 <plist version="1.0">
 <dict>
 	<key>aps-environment</key>
-	<string>development</string>
+	<string>production</string>
 	<key>com.apple.developer.family-controls</key>
 	<true/>
 	<key>com.apple.security.application-groups</key>
-	<array/>
+	<array>
+		<string>group.com.campbell.ScreenTimeCopilot</string>
+	</array>
 </dict>
 </plist>

@@ -420,7 +420,7 @@ struct AboutView: View {
                     .padding(.top, 40)
 
                 VStack(spacing: 8) {
-                    Text("Screen Budget")
+                    Text("Screen Time Copilot")
                         .font(.system(size: 28, weight: .bold))
 
                     Text("Version 1.0.0")
@@ -441,7 +441,7 @@ struct AboutView: View {
                 }
                 .padding()
 
-                Text("© 2026 Screen Budget. All rights reserved.")
+                Text("© 2026 Screen Time Copilot. All rights reserved.")
                     .font(.system(size: 12))
                     .foregroundColor(.secondary)
                     .padding(.bottom, 40)

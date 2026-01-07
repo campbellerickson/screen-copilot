@@ -72,7 +72,7 @@ struct TodayView: View {
             Spacer()
             
             // App name - large and bold
-            Text("Screen Budget")
+            Text("Screen Time Copilot")
                 .font(.system(size: 32, weight: .bold))
                 .foregroundColor(.white)
             
@@ -375,6 +375,8 @@ class TodayViewModel: ObservableObject {
     @Published var totalDailyBudget: Int = 0
     @Published var recentApps: [AppReviewItem] = []
     @Published var isLoading = false
+    @Published var currentStreak: Int = 0
+    @Published var longestStreak: Int = 0
     
     private let apiService = APIService()
     

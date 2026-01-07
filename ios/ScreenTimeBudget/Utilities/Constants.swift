@@ -3,22 +3,28 @@ import Foundation
 struct Constants {
     // API Configuration
     #if DEBUG
-    static let baseURL = "http://192.168.68.50:3000/api/v1"  // Mac's local IP for iPhone testing
+    // Local development - LOCAL TESTING BRANCH
+    // For iOS Simulator: use localhost
+    // For Physical Device: use your Mac's IP address (192.168.68.67)
+    static let baseURL = "http://localhost:3000/api/v1"
+    // For physical device, uncomment and use:
+    // static let baseURL = "http://192.168.68.67:3000/api/v1"
     #else
-    static let baseURL = "https://your-api-domain.com/api/v1"  // TODO: Replace with production URL
+    // Production - Supabase Edge Functions
+    static let baseURL = "https://jqfyunukinwglaitjkfr.supabase.co/functions/v1"
     #endif
 
     // Background Tasks
-    static let backgroundSyncTaskIdentifier = "com.copilot.screentime.sync"
+    static let backgroundSyncTaskIdentifier = "com.campbell.ScreenTimeCopilot.sync"
 
     // App Groups
-    static let appGroupIdentifier = "group.com.copilot.screentime"
+    static let appGroupIdentifier = "group.com.campbell.ScreenTimeCopilot"
 
     // Shared Container
     static let screenTimeDataFileName = "screen_time_data.json"
 
     // Notifications
-    static let dataReadyNotificationName = "com.copilot.screentime.dataReady"
+    static let dataReadyNotificationName = "com.campbell.ScreenTimeCopilot.dataReady"
 }
 
 enum CategoryType: String, Codable, CaseIterable {

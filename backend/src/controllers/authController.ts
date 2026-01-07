@@ -206,7 +206,7 @@ export async function handleAppleSignIn(req: Request, res: Response) {
     let appleResponse;
     try {
       appleResponse = await appleSigninAuth.verifyIdToken(identityToken, {
-        audience: process.env.APPLE_BUNDLE_ID || 'com.campbell.ScreenTimeBudget',
+        audience: process.env.APPLE_BUNDLE_ID || 'com.campbell.ScreenTimeCopilot',
         ignoreExpiration: false,
       });
     } catch (error) {

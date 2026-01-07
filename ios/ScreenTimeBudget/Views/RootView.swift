@@ -36,8 +36,8 @@ struct RootView: View {
                 await checkSubscriptionStatus()
             }
         }
-        .onChange(of: authManager.isAuthenticated) { isAuth in
-            if isAuth {
+        .onChange(of: authManager.isAuthenticated) { oldValue, newValue in
+            if newValue {
                 Task {
                     await checkSubscriptionStatus()
                 }
@@ -51,13 +51,8 @@ struct RootView: View {
         // Check subscription status from backend
         let apiService = APIService()
         do {
-            let response: SubscriptionStatusResponse = try await apiService.performAuthRequest(
-                path: "/subscription/status",
-                method: "GET"
-            )
-
-            hasActiveSubscription = response.data.hasAccess
-
+            let response = try await apiService.getSubscriptionStatus()
+            hasActiveSubscription = response.hasAccess
         } catch {
             print("Failed to check subscription status: \(error)")
             hasActiveSubscription = false
@@ -91,21 +86,7 @@ struct LoadingView: View {
 }
 
 // MARK: - Models
-
-struct SubscriptionStatusResponse: Codable {
-    let success: Bool
-    let data: SubscriptionStatusData
-}
-
-struct SubscriptionStatusData: Codable {
-    let status: String
-    let hasAccess: Bool
-    let platform: String?
-    let trialEndDate: String?
-    let renewalDate: String?
-    let priceUSD: String?
-    let message: String
-}
+// Note: SubscriptionStatusResponse is defined in APIService.swift
 
 #Preview {
     RootView()

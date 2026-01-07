@@ -1,325 +1,245 @@
-# Screen Budget - Setup Guide
+# 🚀 Setup Guide
+
+Complete setup instructions for Screen Budget app with Supabase.
+
+---
+
+## 📋 Table of Contents
+
+1. [Prerequisites](#prerequisites)
+2. [Supabase Setup](#supabase-setup)
+3. [Database Migration](#database-migration)
+4. [Edge Functions Setup](#edge-functions-setup)
+5. [Environment Variables](#environment-variables)
+6. [iOS App Configuration](#ios-app-configuration)
+7. [Testing](#testing)
+
+---
 
 ## Prerequisites
 
-### Required Software
-- **Node.js** v18 or higher
-- **PostgreSQL** 15 or higher (via Docker or native)
-- **Docker** (recommended for database)
-- **Xcode** 15.0+ (for iOS development)
-- **iOS Device** running iOS 16.0+ (Screen Time APIs don't work in simulator)
-
-### Required Accounts
-- Apple Developer Account (for iOS app development)
-- (Optional) Hosting service for production deployment (Railway, Heroku, etc.)
+- Supabase account ([supabase.com](https://supabase.com))
+- Node.js 18+ installed
+- Xcode 15+ installed
+- Supabase CLI installed: `npm install -g supabase`
 
 ---
 
-## Backend Setup
+## Supabase Setup
 
-### 1. Install Dependencies
+### 1. Create Supabase Project
+
+1. Go to [supabase.com](https://supabase.com)
+2. Create a new project
+3. Note your project details:
+   - Project URL: `https://[project-ref].supabase.co`
+   - Project Ref: `[project-ref]`
+   - Publishable Key: Found in Settings → API
+   - Service Role Key: Found in Settings → API (click "Reveal")
+
+### 2. Get Database Connection String
+
+1. Go to **Supabase Dashboard → Settings → Database**
+2. Find **"Connection string"** section
+3. Select:
+   - **Type:** URI
+   - **Source:** Primary Database
+   - **Method:** Transaction pooler
+4. Copy the connection string (port 6543)
+   - Format: `postgresql://postgres.[project-ref]:[PASSWORD]@aws-0-us-west-2.pooler.supabase.com:6543/postgres`
+
+---
+
+## Database Migration
+
+### Option 1: SQL Editor (Recommended - Fastest)
+
+1. Open **Supabase Dashboard → SQL Editor**
+2. Click **"New query"**
+3. Open `backend/ALL_MIGRATIONS.sql`
+4. Copy the entire file
+5. Paste into SQL Editor
+6. Click **"Run"** (or Cmd+Enter)
+7. Wait a few seconds - you should see "Success. No rows returned"
+
+### Option 2: Prisma Migrate (Alternative)
 
 ```bash
 cd backend
-npm install
+export DATABASE_URL="postgresql://postgres.[project-ref]:[PASSWORD]@aws-0-us-west-2.pooler.supabase.com:6543/postgres"
+npx prisma migrate deploy
+npx prisma generate
 ```
 
-### 2. Set Up Environment Variables
+**Note:** Prisma migrations may hang with pooler connections. Use SQL Editor if this happens.
 
-Create a `.env` file from the example:
+### Verify Tables
+
+Go to **Supabase Dashboard → Table Editor** and verify these tables exist:
+- `users`
+- `subscriptions`
+- `screen_time_budgets`
+- `category_budgets`
+- `user_apps`
+- `daily_app_usage`
+- `budget_alerts`
+- `streaks`
+- `achievements`
+- `weekly_goals`
+- `break_reminders`
+
+---
+
+## Edge Functions Setup
+
+### 1. Install Supabase CLI
 
 ```bash
-cp .env.example .env
+npm install -g supabase
 ```
 
-Edit `.env` and configure:
-
-```env
-# Database Connection
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/copilot_screentime?schema=public"
-
-# Server Configuration
-PORT=3000
-NODE_ENV=development
-
-# JWT Secret (generate a secure random string)
-JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
-
-# CORS (allow all origins in development)
-CORS_ORIGIN=*
-```
-
-**Important:** Change `JWT_SECRET` to a secure random string for production!
-
-### 3. Start PostgreSQL Database
-
-#### Option A: Using Docker (Recommended)
+### 2. Login to Supabase
 
 ```bash
-# Start PostgreSQL container
-docker-compose up -d
-
-# Verify it's running
-docker ps | grep postgres
+supabase login
 ```
 
-#### Option B: Native PostgreSQL Installation
-
-If you have PostgreSQL installed locally:
+### 3. Link Your Project
 
 ```bash
-# Create database
-createdb copilot_screentime
-
-# Verify connection
-psql copilot_screentime
+cd /path/to/screen-budget
+supabase link --project-ref [your-project-ref]
 ```
 
-Update `DATABASE_URL` in `.env` to match your local PostgreSQL configuration.
+Replace `[your-project-ref]` with your actual project reference (e.g., `jqfyunukinwglaitjkfr`).
 
-### 4. Run Database Migrations
+### 4. Deploy Functions
+
+Deploy all functions at once:
 
 ```bash
-# Generate Prisma Client
-npm run prisma:generate
-
-# Run migrations to create tables
-npm run prisma:migrate
-
-# (Optional) Open Prisma Studio to view database
-npm run prisma:studio
+supabase functions deploy
 ```
 
-### 5. Start Development Server
+Or deploy individually:
 
 ```bash
-npm run dev
-```
-
-You should see:
-```
-Server running on port 3000
-```
-
-### 6. Test API Endpoints
-
-```bash
-# Health check
-curl http://localhost:3000/health
-
-# Expected response:
-# {"status":"ok","timestamp":"2025-01-15T10:00:00.000Z"}
+supabase functions deploy auth-signup
+supabase functions deploy auth-login
+supabase functions deploy auth-me
+supabase functions deploy auth-delete-account
+supabase functions deploy subscription-status
+supabase functions deploy subscription-cancel
+supabase functions deploy subscription-validate-receipt
+supabase functions deploy budget-create
+supabase functions deploy budget-get
+supabase functions deploy budget-update-category
+supabase functions deploy usage-sync
+supabase functions deploy usage-daily
+supabase functions deploy weekly-goals-current
+supabase functions deploy weekly-goals-set
+supabase functions deploy weekly-goals-history
+supabase functions deploy break-reminders-get
+supabase functions deploy break-reminders-update
+supabase functions deploy weekly-insights
 ```
 
 ---
 
-## iOS Setup
+## Environment Variables
 
-### 1. Create Xcode Project
+### Supabase Edge Functions Secrets
 
-Since Xcode projects cannot be created programmatically, follow these steps:
+Go to **Supabase Dashboard → Settings → Edge Functions → Secrets**
 
-1. Open Xcode
-2. File → New → Project
-3. Select "iOS App"
-4. Configure:
-   - Product Name: `CopilotScreenTime`
-   - Interface: SwiftUI
-   - Language: Swift
-   - Minimum Deployments: iOS 16.0
+Add this secret:
 
-### 2. Enable Capabilities
+| Name | Value |
+|------|-------|
+| `SERVICE_ROLE_KEY` | Your service role key from Settings → API |
 
-In Xcode:
-1. Select your project in the navigator
-2. Select the target
-3. Go to "Signing & Capabilities" tab
-4. Click "+ Capability" button
-5. Add the following capabilities:
-   - **Family Controls**
-   - **App Groups** (create group: `group.com.copilot.screentime`)
-   - **Background Modes** (check "Background fetch")
-   - **Push Notifications**
+**Important:** 
+- Supabase automatically provides `SUPABASE_URL` and `SUPABASE_ANON_KEY`
+- You only need to add `SERVICE_ROLE_KEY` (without the `SUPABASE_` prefix)
+- Secrets starting with `SUPABASE_` are not allowed
 
-### 3. Update Info.plist
+### Optional Secrets
 
-Add these keys to your `Info.plist`:
+Add these when ready:
 
-```xml
-<key>NSFamilyControlsUsageDescription</key>
-<string>Copilot needs Screen Time access to help you track and budget your app usage.</string>
+| Name | Value | When Needed |
+|------|-------|-------------|
+| `APPLE_SHARED_SECRET` | From App Store Connect | When setting up subscriptions |
 
-<key>BGTaskSchedulerPermittedIdentifiers</key>
-<array>
-    <string>com.copilot.screentime.sync</string>
-</array>
-```
+---
 
-### 4. Copy Swift Files
+## iOS App Configuration
 
-Copy all Swift files from `ios/CopilotScreenTime/` into your Xcode project:
-- Drag and drop the folders into Xcode
-- Make sure "Copy items if needed" is checked
-- Select your target
+### 1. Update Base URL
 
-### 5. Create Device Activity Report Extension
+Open `ios/ScreenTimeBudget/Utilities/Constants.swift`:
 
-1. File → New → Target
-2. Select "Device Activity Report Extension"
-3. Product Name: `ScreenTimeReportExtension`
-4. Enable App Groups for the extension
-5. Use the same identifier: `group.com.copilot.screentime`
-
-### 6. Configure API Base URL
-
-Edit `ios/CopilotScreenTime/Utilities/Constants.swift`:
-
-For **iOS Simulator**:
 ```swift
-static let baseURL = "http://localhost:3000/api/v1"
+static let baseURL = "https://[your-project-ref].supabase.co/functions/v1"
 ```
 
-For **Physical Device** (find your Mac's IP):
-```bash
-# On Mac, run:
-ifconfig | grep "inet " | grep -v 127.0.0.1
-```
+Replace `[your-project-ref]` with your actual Supabase project reference.
 
-Then update:
-```swift
-static let baseURL = "http://192.168.1.XXX:3000/api/v1"  // Replace with your Mac's IP
-```
+### 2. Build and Run
 
-### 7. Build and Run
-
-1. Connect iPhone via USB
-2. Select your iPhone as the target device
-3. Click Run (⌘R)
-4. Trust developer certificate on iPhone if prompted
+1. Open `ios/ScreenTimeBudget.xcodeproj` in Xcode
+2. Select your development team
+3. Build and run on simulator or device
 
 ---
 
-## Testing the Complete Flow
+## Testing
 
-### 1. Create a Test User and Budget
+### 1. Test Authentication
 
 ```bash
-# Create a budget for test user
-curl -X POST http://localhost:3000/api/v1/screen-time/budgets \
+curl -X POST https://[project-ref].supabase.co/functions/v1/auth-signup \
   -H "Content-Type: application/json" \
-  -d '{
-    "userId": "test-user-123",
-    "monthYear": "2025-01-01",
-    "categories": [
-      {
-        "categoryType": "social_media",
-        "categoryName": "Social Media",
-        "monthlyHours": 30,
-        "isExcluded": false
-      },
-      {
-        "categoryType": "entertainment",
-        "categoryName": "Entertainment",
-        "monthlyHours": 40,
-        "isExcluded": false
-      }
-    ]
-  }'
+  -d '{"email":"test@example.com","password":"Test1234","name":"Test User"}'
 ```
 
-### 2. Verify Budget Creation
+### 2. Test in iOS App
 
-```bash
-# Get current budget
-curl http://localhost:3000/api/v1/screen-time/budgets/test-user-123/current
-```
-
-### 3. Simulate Usage Sync
-
-```bash
-# Sync some usage data
-curl -X POST http://localhost:3000/api/v1/screen-time/usage/sync \
-  -H "Content-Type: application/json" \
-  -d '{
-    "userId": "test-user-123",
-    "usageDate": "2025-01-15",
-    "apps": [
-      {
-        "bundleId": "com.instagram.instagram",
-        "appName": "Instagram",
-        "totalMinutes": 65
-      },
-      {
-        "bundleId": "com.netflix.Netflix",
-        "appName": "Netflix",
-        "totalMinutes": 120
-      }
-    ]
-  }'
-```
-
-### 4. Check Daily Usage
-
-```bash
-# Get daily usage summary
-curl http://localhost:3000/api/v1/screen-time/usage/test-user-123/daily?date=2025-01-15
-```
-
-### 5. Check Alerts
-
-```bash
-# Get user alerts
-curl http://localhost:3000/api/v1/screen-time/alerts/test-user-123
-```
+1. Build and run the iOS app
+2. Try signing up with a test account
+3. Verify it connects to Supabase
+4. Test usage syncing
 
 ---
 
-## Troubleshooting
+## 🐛 Troubleshooting
 
-### Backend Issues
+### "Can't reach database server"
+- Make sure you're using the **Transaction pooler** connection string (port 6543)
+- Not the direct connection string
 
-**Problem:** Cannot connect to database
-```bash
-# Check if PostgreSQL is running
-docker ps | grep postgres
+### "Authentication required" errors
+- Make sure you've deployed all Edge Functions
+- Check that `SERVICE_ROLE_KEY` is set correctly in Supabase secrets
 
-# Or if native:
-pg_isready
+### Function deployment fails
+- Make sure you're logged in: `supabase login`
+- Make sure project is linked: `supabase link --project-ref [ref]`
+- Check that environment variables are set in Supabase Dashboard
 
-# Restart PostgreSQL
-docker-compose restart
-```
-
-**Problem:** Prisma errors
-```bash
-# Regenerate Prisma client
-npm run prisma:generate
-
-# Reset database (WARNING: deletes all data)
-npx prisma migrate reset
-```
-
-### iOS Issues
-
-**Problem:** Cannot connect to backend from device
-- Ensure iPhone and Mac are on same WiFi network
-- Update `Constants.swift` with Mac's local IP address
-- Check Mac firewall isn't blocking port 3000
-
-**Problem:** Screen Time permission denied
-- Check `Info.plist` has `NSFamilyControlsUsageDescription`
-- iOS 16.0+ required
-- Must test on physical device (not simulator)
-
-**Problem:** App Groups not working
-- Verify App Group is created in Apple Developer Portal
-- Both main app and extension use same App Group ID
-- Clean build folder (Shift+⌘+K) and rebuild
+### Prisma migrations hang
+- Use the SQL Editor method instead (see [Database Migration](#database-migration))
+- Run `backend/ALL_MIGRATIONS.sql` directly in Supabase SQL Editor
 
 ---
 
-## Next Steps
+## 📚 Additional Resources
 
-1. See [DEPLOYMENT.md](./DEPLOYMENT.md) for production deployment
-2. See [API.md](./API.md) for complete API documentation
-3. See [DATABASE.md](./DATABASE.md) for database schema details
+- [Migration Instructions](MIGRATION_INSTRUCTIONS.md) - Detailed migration guide
+- [Quick Start](QUICK_START.md) - Fastest setup path
+- [Subscription Setup](SUBSCRIPTION_CLARIFICATION.md) - iOS subscription configuration
+- [Supabase Migration Guide](SUPABASE_MIGRATION_GUIDE.md) - Complete migration details
+
+---
+
+**Setup complete!** Your app should now be ready to use. 🎉

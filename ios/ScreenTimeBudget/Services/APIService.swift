@@ -99,7 +99,7 @@ class APIService {
     // MARK: - Subscription APIs
 
     func getSubscriptionStatus() async throws -> SubscriptionStatusResponse {
-        guard let url = URL(string: "\(baseURL)/subscription/status") else {
+        guard let url = URL(string: "\(baseURL)/subscription-status") else {
             throw APIError.invalidURL
         }
 
@@ -135,8 +135,31 @@ class APIService {
         )
     }
 
+    func validateReceipt(receiptData: String, transactionId: String) async throws -> ReceiptValidationResponse {
+        guard let url = URL(string: "\(baseURL)/subscription-validate-receipt") else {
+            throw APIError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        addAuthHeader(to: &request)
+        request.httpBody = try JSONSerialization.data(withJSONObject: [
+            "receiptData": receiptData,
+            "transactionId": transactionId
+        ])
+
+        struct Response: Codable {
+            let success: Bool
+            let data: ReceiptValidationResponse
+        }
+
+        let response: Response = try await performRequest(request)
+        return response.data
+    }
+
     func cancelSubscription() async throws {
-        guard let url = URL(string: "\(baseURL)/subscription/cancel") else {
+        guard let url = URL(string: "\(baseURL)/subscription-cancel") else {
             throw APIError.invalidURL
         }
 
@@ -155,7 +178,7 @@ class APIService {
     // MARK: - Account APIs
 
     func deleteAccount() async throws {
-        guard let url = URL(string: "\(baseURL)/auth/account") else {
+        guard let url = URL(string: "\(baseURL)/auth-delete-account") else {
             throw APIError.invalidURL
         }
 
@@ -174,7 +197,7 @@ class APIService {
     // MARK: - Budget APIs
 
     func createBudget(userId: String, monthYear: Date, categories: [CategoryBudgetInput]) async throws -> ScreenTimeBudget? {
-        guard let url = URL(string: "\(baseURL)/screen-time/budgets") else {
+        guard let url = URL(string: "\(baseURL)/budget-create") else {
             throw APIError.invalidURL
         }
 
@@ -216,7 +239,7 @@ class APIService {
     // MARK: - Usage APIs
 
     func syncUsage(userId: String, usageDate: Date, apps: [AppUsageDTO]) async throws -> SyncResponse {
-        guard let url = URL(string: "\(baseURL)/screen-time/usage/sync") else {
+        guard let url = URL(string: "\(baseURL)/usage-sync") else {
             throw APIError.invalidURL
         }
 
@@ -266,7 +289,7 @@ class APIService {
         dateFormatter.formatOptions = [.withFullDate]
         let dateString = dateFormatter.string(from: date)
 
-        guard let url = URL(string: "\(baseURL)/screen-time/usage/\(userId)/daily?date=\(dateString)") else {
+        guard let url = URL(string: "\(baseURL)/usage-daily?date=\(dateString)") else {
             throw APIError.invalidURL
         }
 
@@ -324,7 +347,7 @@ class APIService {
 
 // MARK: - Response Models
 
-struct SubscriptionStatusResponse {
+struct SubscriptionStatusResponse: Codable {
     let status: String
     let hasAccess: Bool
     let platform: String?

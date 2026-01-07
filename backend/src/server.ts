@@ -3,6 +3,11 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
+
+// Load .env.local for local development, fallback to .env
+dotenv.config({ path: '.env.local' });
+dotenv.config(); // Fallback to .env
+
 import screenTimeRoutes from './routes/screenTime';
 import authRoutes from './routes/auth';
 import subscriptionRoutes from './routes/subscription';
@@ -10,8 +15,6 @@ import weeklyGoalsRoutes from './routes/weeklyGoals';
 import breakRemindersRoutes from './routes/breakReminders';
 import weeklyInsightsRoutes from './routes/weeklyInsights';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
-
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -66,7 +69,7 @@ if (process.env.VERCEL !== '1') {
   app.listen(PORT, () => {
     console.log(`
 ╔═══════════════════════════════════════════════╗
-║  Screen Budget API Server                     ║
+║  Screen Budget API Server (Legacy)            ║
 ║  Port: ${PORT}                                    ║
 ║  Environment: ${process.env.NODE_ENV || 'development'}                   ║
 ║  Time: ${new Date().toISOString()}  ║

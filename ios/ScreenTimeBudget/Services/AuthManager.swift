@@ -103,7 +103,7 @@ class AuthManager: ObservableObject {
     func login(email: String, password: String) async throws -> LoginResponse {
         let apiService = APIService()
         let response: LoginResponse = try await apiService.performAuthRequest(
-            path: "/auth/login",
+            path: "/auth-login",
             method: "POST",
             body: ["email": email, "password": password]
         )
@@ -122,7 +122,7 @@ class AuthManager: ObservableObject {
         }
 
         let response: LoginResponse = try await apiService.performAuthRequest(
-            path: "/auth/signup",
+            path: "/auth-signup",
             method: "POST",
             body: body
         )

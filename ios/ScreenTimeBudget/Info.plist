@@ -4,10 +4,10 @@
 <dict>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
-		<string>com.copilot.screentime.sync</string>
+		<string>com.campbell.ScreenTimeCopilot.sync</string>
 	</array>
 	<key>NSFamilyControlsUsageDescription</key>
-	<string>Screen Time Budget needs access to Screen Time data to help you track and
+	<string>Screen Time Copilot needs access to Screen Time data to help you track and
   manage your app usage.</string>
 	<key>UIBackgroundModes</key>
 	<array/>

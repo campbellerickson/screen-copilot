@@ -12,7 +12,7 @@ class StoreKitManager: NSObject, ObservableObject {
     static let shared = StoreKitManager()
 
     // Product IDs (these need to be created in App Store Connect)
-    private let monthlySubscriptionID = "com.campbell.screenbudget.monthly"
+    private let monthlySubscriptionID = "com.campbell.screentimecopilot.monthly"
 
     @Published var products: [SKProduct] = []
     @Published var isPurchasing = false
@@ -185,13 +185,9 @@ extension StoreKitManager: SKPaymentTransactionObserver {
         Task {
             let apiService = APIService()
             do {
-                let _: ReceiptValidationResponse = try await apiService.performAuthRequest(
-                    path: "/subscription/validate-receipt",
-                    method: "POST",
-                    body: [
-                        "receiptData": receiptString,
-                        "transactionId": transaction.transactionIdentifier ?? ""
-                    ]
+                let _ = try await apiService.validateReceipt(
+                    receiptData: receiptString,
+                    transactionId: transaction.transactionIdentifier ?? ""
                 )
                 print("Receipt validated successfully")
             } catch {
