@@ -5,8 +5,9 @@
   "main": "dist/server.js",
   "scripts": {
     "dev": "nodemon src/server.ts",
-    "build": "tsc",
+    "build": "prisma generate && tsc",
     "start": "node dist/server.js",
+    "postinstall": "prisma generate",
     "test": "jest --runInBand --detectOpenHandles",
     "test:watch": "jest --watch --runInBand",
     "test:coverage": "jest --coverage --runInBand",
