@@ -1,82 +1,114 @@
-# 📱 Screen Budget - iOS App
+# 📱 Screen Time Budget
 
-A modern iOS app for tracking and managing screen time with budget-based controls, built with SwiftUI and Supabase.
+A comprehensive iOS app for tracking and managing screen time with intelligent budgeting, weekly goals, and insights.
 
 ---
 
 ## 🚀 Quick Start
 
-### For Local Development (Current Branch: `local-testing`)
+### Deploy in 10 Minutes
 
-1. **Start local database and backend:**
+1. **Deploy Database & Backend:**
    ```bash
-   ./scripts/start-local.sh
+   # See QUICKSTART.md for full guide
+   cd backend
+   npx prisma migrate deploy  # Deploy to Neon
+   # Deploy to Vercel from GitHub
    ```
 
-2. **Open iOS app in Xcode:**
+2. **Build for TestFlight:**
    ```bash
    open ios/ScreenTimeBudget.xcodeproj
+   # Product → Archive → Upload
    ```
 
-3. **Build and run!**
-
-See [docs/LOCAL_DEVELOPMENT.md](docs/LOCAL_DEVELOPMENT.md) for detailed local setup.
-
-### For Production (Branch: `main`)
-
-1. **Set up Supabase database:**
-   - Run `backend/ALL_MIGRATIONS.sql` in Supabase SQL Editor
-   - See [docs/SETUP.md](docs/SETUP.md) for details
-
-2. **Deploy Edge Functions:**
-   ```bash
-   supabase functions deploy
-   ```
-
-3. **Update iOS app URL:**
-   - Edit `ios/ScreenTimeBudget/Utilities/Constants.swift`
-   - Set to your Supabase project URL
+See **[QUICKSTART.md](QUICKSTART.md)** for the complete 10-minute guide.
 
 ---
 
 ## 📚 Documentation
 
-All documentation is in the `docs/` folder:
+### Getting Started
+- **[QUICKSTART.md](QUICKSTART.md)** - Get up and running in 10 minutes ⚡
+- **[DEPLOYMENT_STATUS.md](DEPLOYMENT_STATUS.md)** - Current deployment status
+- **[test-production-api.sh](test-production-api.sh)** - Test your API
 
-- **[Documentation Index](docs/README.md)** - Complete documentation index
-- **[Local Development](docs/LOCAL_DEVELOPMENT.md)** - Local setup guide
-- **[Setup Guide](docs/SETUP.md)** - Production setup with Supabase
-- **[Architecture](docs/ARCHITECTURE.md)** - System architecture
-- **[API Documentation](docs/API.md)** - API endpoints reference
-- **[TestFlight Guide](docs/TESTFLIGHT_GUIDE.md)** - iOS TestFlight setup
+### Deployment Guides
+- **[TESTFLIGHT_GUIDE.md](TESTFLIGHT_GUIDE.md)** - Complete TestFlight deployment walkthrough
+- **[PRODUCTION_SETUP.md](PRODUCTION_SETUP.md)** - Production environment setup
+- **[VERCEL_CHECKLIST.md](VERCEL_CHECKLIST.md)** - Vercel configuration reference
+
+### Architecture & Technical
+- **[PRODUCTION_ARCHITECTURE.md](PRODUCTION_ARCHITECTURE.md)** - Full system architecture
+- **[VERCEL_ARCHITECTURE.md](VERCEL_ARCHITECTURE.md)** - Vercel serverless architecture
 
 ---
 
-## 🏗️ Project Structure
+## 🏗️ Architecture
 
 ```
+iOS App (SwiftUI)
+    ↓ HTTPS
+Vercel Edge Network
+    ↓
+Express.js API (Serverless)
+    ↓
+Neon PostgreSQL (Serverless)
+```
+
+### Project Structure
+```
 screen-budget/
-├── ios/                    # iOS app (SwiftUI)
+├── ios/                          # iOS app (SwiftUI)
 │   └── ScreenTimeBudget/
-├── backend/                # Express backend (for local testing)
+│       ├── Models/               # Data models
+│       ├── Views/                # SwiftUI views
+│       ├── ViewModels/           # Business logic
+│       ├── Services/             # API, Screen Time
+│       └── Utilities/            # Helpers, constants
+│
+├── backend/                      # Express API
+│   ├── api/                      # Serverless functions
+│   │   └── index.ts              # Main API handler
 │   ├── src/
-│   └── prisma/
-├── supabase/               # Supabase Edge Functions (production)
-│   ├── functions/
-│   └── config.toml
-└── docs/                   # All documentation
+│   │   ├── routes/               # API routes
+│   │   ├── controllers/          # Business logic
+│   │   ├── middleware/           # Auth, errors
+│   │   └── config/               # Database config
+│   ├── prisma/
+│   │   ├── schema.prisma         # Database schema
+│   │   └── migrations/           # Migration history
+│   └── vercel.json               # Vercel config
+│
+└── docs/                         # Documentation
+    ├── QUICKSTART.md
+    ├── TESTFLIGHT_GUIDE.md
+    └── ... (more guides)
 ```
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **iOS:** SwiftUI, StoreKit 2, Screen Time API
-- **Backend (Local):** Express.js, Node.js
-- **Backend (Production):** Supabase Edge Functions (Deno)
-- **Database:** PostgreSQL
-- **Authentication:** Supabase Auth (production) / Custom JWT (local)
-- **Subscriptions:** Apple App Store (StoreKit)
+### iOS (Frontend)
+- **Language:** Swift 5.9+
+- **Framework:** SwiftUI (iOS 17+)
+- **Architecture:** MVVM
+- **APIs:** Screen Time API, URLSession, Combine
+- **Storage:** Keychain, UserDefaults
+
+### Backend (API)
+- **Runtime:** Node.js 24.x
+- **Framework:** Express.js 4.18+
+- **Language:** TypeScript 5.0+
+- **ORM:** Prisma 5.22+
+- **Database:** PostgreSQL (via Neon)
+- **Deployment:** Vercel Serverless Functions
+
+### Database
+- **Provider:** Neon (Serverless PostgreSQL)
+- **Schema:** 12 tables
+- **Features:** Auto-scaling, connection pooling, backups
 
 ---
 
@@ -93,41 +125,50 @@ screen-budget/
 
 ---
 
-## 🔧 Development
+## 🚦 Current Status
 
-### Branches
+✅ **Backend:** Deployed and running at https://screen-copilot-ysge.vercel.app
 
-- **`local-testing`** - Local development with local database
-- **`main`** - Production with Supabase
+✅ **Database:** Neon PostgreSQL configured with full schema
 
-### Local Development
+✅ **iOS App:** Ready for TestFlight archive
 
+⏳ **Environment Variables:** Being added by user
+
+📋 **Next:** Test API → Archive iOS app → Upload to TestFlight
+
+See [DEPLOYMENT_STATUS.md](DEPLOYMENT_STATUS.md) for complete status.
+
+---
+
+## 🧪 Testing
+
+Test the production API:
 ```bash
-# Start everything
-./scripts/start-local.sh
-
-# Or manually:
-cd backend
-docker-compose up -d
-npm run dev
+chmod +x test-production-api.sh
+./test-production-api.sh
 ```
 
-### Production Deployment
+---
 
-See [docs/SETUP.md](docs/SETUP.md) for Supabase setup and deployment.
+## 💰 Costs
+
+**Monthly (estimated):**
+- Vercel Pro: ~$20-35
+- Neon: $0-19 (free tier → paid)
+- Apple Developer: ~$8.25 ($99/year)
+
+**Total: ~$28-62/month**
 
 ---
 
-## 📝 License
+## 📞 Support
 
-MIT License
-
----
-
-## 🤝 Contributing
-
-[Contributing Guidelines]
+- **Production API:** https://screen-copilot-ysge.vercel.app
+- **Health Check:** https://screen-copilot-ysge.vercel.app/health
+- **Issues:** https://github.com/campbellerickson/screen-copilot/issues
+- **Documentation:** See guides above
 
 ---
 
-**Built with ❤️ for better screen time management**
+*Ready to deploy? Start with [QUICKSTART.md](QUICKSTART.md)!*
